@@ -14,12 +14,13 @@
         <!--android:text="@string/default_time"-->
         <!--android:layout_centerInParent="true"/>-->
 
+
     <ImageView
         android:id="@+id/increment_number_of_rounds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/add_icon"
-        android:layout_alignTop="@+id/header_number_of_rounds"
+        android:layout_alignBottom="@+id/number_of_rounds"
         android:layout_alignLeft="@+id/increment_round_time"
         android:layout_alignStart="@+id/increment_round_time" />
 
@@ -28,38 +29,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/round"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:textSize="32sp"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/start_timer_button"
+        android:layout_alignStart="@+id/start_timer_button" />
 
-    <LinearLayout
-        android:id="@+id/round_selection"
+
+    <EditText
+        android:id="@+id/number_of_rounds"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_number_of_rounds"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:gravity="center"
+        android:inputType="phone"
+        android:text="@string/default_number_of_rounds"
+        android:textSize="32sp" />
+
+
+    <ImageView
+        android:id="@+id/decrement_number_of_rounds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header_number_of_rounds"
-        android:layout_centerInParent="true"
-        android:paddingLeft="45dp">
-
-        <EditText
-            android:id="@+id/number_of_rounds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/default_number_of_rounds"
-            android:cursorVisible="false"
-            android:paddingRight="50dp"
-            android:background="@android:color/transparent"/>
-
-    </LinearLayout>
+        app:srcCompat="@mipmap/minus_icon"
+        android:layout_alignBottom="@+id/number_of_rounds"
+        android:layout_alignLeft="@+id/decrement_round_time"
+        android:layout_alignStart="@+id/decrement_round_time" />
 
 
+
+
+
+
+
+
+
+
+    <ImageView
+        android:id="@+id/increment_round_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/add_icon"
+        android:layout_alignBottom="@+id/work_interval_time"
+        android:layout_toRightOf="@+id/header_work_interval_time"
+        android:layout_toEndOf="@+id/header_work_interval_time" />
 
     <TextView
         android:id="@+id/header_work_interval_time"
+        android:textSize="32sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/round_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/header_number_of_rounds"/>
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/increment_number_of_rounds"
+        android:layout_centerHorizontal="true" />
     <LinearLayout
         android:id="@+id/work_interval_time"
         android:layout_width="wrap_content"
@@ -69,71 +96,104 @@
 
         <EditText
             android:id="@+id/work_round_minutes"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="00"
+            android:background="@android:color/transparent"
             android:cursorVisible="false"
-            android:paddingRight="10dp"
-            android:background="@android:color/transparent"/>
+            android:digits="1234567890"
+            android:gravity="center"
+            android:inputType="phone"
+            android:text="00"
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/colon_for_work_interval"
+            android:textSize="32sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/colon_for_time"/>
+            android:text="@string/colon_for_time" />
 
         <EditText
             android:id="@+id/work_round_seconds"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="00"
+            android:background="@android:color/transparent"
             android:cursorVisible="false"
-            android:paddingLeft="10dp"
-            android:background="@android:color/transparent"/>
+            android:digits="1234567890"
+            android:gravity="center"
+            android:inputType="phone"
+            android:text="00"
+            android:textSize="32sp" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/decrement_round_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/minus_icon"
+        android:layout_alignBottom="@+id/work_interval_time"
+        android:layout_toLeftOf="@+id/header_work_interval_time"
+        android:layout_toStartOf="@+id/header_work_interval_time" />
 
+
+
+
+
+
+
+
+
+
+    <ImageView
+        android:id="@+id/increment_rest_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/add_icon"
+        android:layout_alignBottom="@+id/rest_round_seconds"
+        android:layout_toRightOf="@+id/header_work_interval_time"
+        android:layout_toEndOf="@+id/header_work_interval_time" />
 
     <TextView
         android:id="@+id/header_rest_interval_time"
+        android:textSize="32sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rest_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/header_work_interval_time"/>
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/work_interval_time"
+        android:layout_centerHorizontal="true" />
     <LinearLayout
         android:id="@+id/rest_round_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header_rest_interval_time"
-        android:layout_alignLeft="@+id/header_rest_interval_time"
-        android:layout_alignStart="@+id/header_rest_interval_time">
-
-        <EditText
-            android:id="@+id/rest_round_minutes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00"
-            android:paddingRight="10dp"
-            android:cursorVisible="false"
-            android:background="@android:color/transparent"/>
+        android:layout_alignBottom="@+id/rest_round_minutes"
+        android:layout_toLeftOf="@+id/rest_round_seconds"
+        android:layout_toStartOf="@+id/rest_round_seconds">
 
         <TextView
             android:id="@+id/colon_for_rest_interval"
+            android:textSize="32sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/colon_for_time"/>
 
-        <EditText
-            android:id="@+id/rest_round_seconds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00"
-            android:paddingLeft="10dp"
-            android:cursorVisible="false"
-            android:background="@android:color/transparent"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/decrement_rest_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/minus_icon"
+        android:layout_alignBottom="@+id/rest_round_minutes"
+        android:layout_toLeftOf="@+id/header_work_interval_time"
+        android:layout_toStartOf="@+id/header_work_interval_time" />
+
+
+
+
+
+
+
 
 
 
@@ -142,10 +202,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_timer"
-        android:layout_below="@+id/increment_round_time"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/rest_round_time"
         android:layout_alignLeft="@+id/stop_timer_button"
-        android:layout_alignStart="@+id/stop_timer_button"
-        android:layout_marginTop="74dp" />
+        android:layout_alignStart="@+id/stop_timer_button" />
 
     <Button
         android:id="@+id/stop_timer_button"
@@ -155,48 +215,34 @@
         android:layout_centerInParent="true"
         android:layout_below="@id/start_timer_button"/>
 
-    <ImageView
-        android:id="@+id/increment_round_time"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/rest_round_minutes"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/add_icon"
-        android:layout_alignTop="@+id/header_rest_interval_time"
-        android:layout_toRightOf="@+id/start_timer_button"
-        android:layout_toEndOf="@+id/start_timer_button" />
+        android:layout_below="@+id/header_rest_interval_time"
+        android:layout_toLeftOf="@+id/rest_round_time"
+        android:layout_toStartOf="@+id/rest_round_time"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:gravity="center"
+        android:inputType="phone"
+        android:text="00"
+        android:textSize="32sp" />
 
-    <ImageView
-        android:id="@+id/increment_rest_time"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/rest_round_seconds"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/increment_number_of_rounds"
-        android:layout_alignStart="@+id/increment_number_of_rounds"
-        android:layout_alignTop="@+id/header_work_interval_time"
-        app:srcCompat="@mipmap/add_icon" />
-
-    <ImageView
-        android:id="@+id/decrement_round_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/minus_icon"
-        android:layout_alignTop="@+id/header_work_interval_time"
-        android:layout_alignLeft="@+id/decrement_rest_time"
-        android:layout_alignStart="@+id/decrement_rest_time" />
-
-    <ImageView
-        android:id="@+id/decrement_number_of_rounds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/header_number_of_rounds"
-        android:layout_toLeftOf="@+id/start_timer_button"
-        android:layout_toStartOf="@+id/start_timer_button"
-        app:srcCompat="@mipmap/minus_icon" />
-
-    <ImageView
-        android:id="@+id/decrement_rest_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/minus_icon"
-        android:layout_above="@+id/start_timer_button"
-        android:layout_toLeftOf="@+id/start_timer_button" />
+        android:layout_alignEnd="@+id/work_interval_time"
+        android:layout_alignRight="@+id/work_interval_time"
+        android:layout_below="@+id/header_rest_interval_time"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:gravity="center"
+        android:inputType="phone"
+        android:text="00"
+        android:textSize="32sp" />
 
 </RelativeLayout>

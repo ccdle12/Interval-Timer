@@ -110,8 +110,124 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
     }
 
     @Override
-    public void decrementNumberOfRounds(String numOfRounds) {
+    public void decrementNumberOfRounds(String numOfRounds)
+    {
+        int roundsAsInt = TimeValuesHelper.decrementValue(numOfRounds);
 
+        if (roundsAsInt < 0)
+            roundsAsInt = 0;
+
+        String roundsAsString = TimeValuesHelper.convertIntToString(roundsAsInt);
+
+        this.dashboardCallback.updateRoundsDisplay(roundsAsString);
+    }
+
+    @Override
+    public void incrementWorkRoundTime(String minutes, String seconds)
+    {
+        int workMinutes = TimeValuesHelper.convertStringToInt(minutes);
+        int workSeconds = TimeValuesHelper.convertStringToInt(seconds);
+
+        ++workSeconds;
+
+        if (workSeconds >= 60)
+        {
+            workSeconds = 0;
+            ++workMinutes;
+        }
+
+        String formattedMinutes = TimeValuesHelper.formatMinutesToString(workMinutes);
+        String formattedSeconds = TimeValuesHelper.formatSecondsToString(workSeconds);
+
+        this.dashboardCallback.updateWorkRoundDisplay(formattedMinutes, formattedSeconds);
+    }
+
+    @Override
+    public void decrementWorkRoundTime(String minutes, String seconds)
+    {
+        int workMinutes = TimeValuesHelper.convertStringToInt(minutes);
+        int workSeconds = TimeValuesHelper.convertStringToInt(seconds);
+
+        --workSeconds;
+
+        if (workSeconds < 0)
+        {
+            workSeconds = 59;
+            --workMinutes;
+        }
+
+        if (workMinutes < 0)
+        {
+            workMinutes = 0;
+            workSeconds = 0;
+        }
+
+
+        String formattedMinutes = TimeValuesHelper.formatMinutesToString(workMinutes);
+        String formattedSeconds = TimeValuesHelper.formatSecondsToString(workSeconds);
+
+        this.dashboardCallback.updateWorkRoundDisplay(formattedMinutes,formattedSeconds);
+    }
+
+    @Override
+    public void incrementRestRoundTime(String minutes, String seconds) {
+        int restMinutes = TimeValuesHelper.convertStringToInt(minutes);
+        int restSeconds = TimeValuesHelper.convertStringToInt(seconds);
+
+        ++restSeconds;
+
+        if (restSeconds >= 60)
+        {
+            restSeconds = 0;
+            ++restMinutes;
+        }
+
+        String formattedMinutes = TimeValuesHelper.formatMinutesToString(restMinutes);
+        String formattedSeconds = TimeValuesHelper.formatSecondsToString(restSeconds);
+
+        this.dashboardCallback.updateRestRoundDisplay(formattedMinutes, formattedSeconds);
+    }
+
+    @Override
+    public void decrementRestRoundTime(String minutes, String seconds) {
+        int restMinutes = TimeValuesHelper.convertStringToInt(minutes);
+        int restSeconds = TimeValuesHelper.convertStringToInt(seconds);
+
+        --restSeconds;
+
+        if (restSeconds < 0)
+        {
+            restSeconds = 59;
+            --restMinutes;
+        }
+
+        if (restMinutes < 0)
+        {
+            restMinutes = 0;
+            restSeconds = 0;
+        }
+
+
+        String formattedMinutes = TimeValuesHelper.formatMinutesToString(restMinutes);
+        String formattedSeconds = TimeValuesHelper.formatSecondsToString(restSeconds);
+
+        this.dashboardCallback.updateRestRoundDisplay(formattedMinutes,formattedSeconds);
+    }
+
+    @Override
+    public void checkRoundLimits(String rounds)
+    {
+        if (rounds.length() > 0) {
+            int numberOfRounds = TimeValuesHelper.convertStringToInt(rounds);
+
+            if (numberOfRounds > 100) {
+                numberOfRounds = 100;
+
+                String formattedRounds = TimeValuesHelper.convertIntToString(numberOfRounds);
+                this.dashboardCallback.updateRoundsDisplay(formattedRounds);
+            }
+
+        }
     }
 
 

@@ -41,13 +41,12 @@ public class DashboardTest {
         this.mainActivity = activityTestRule.getActivity();
     }
 
-    /*Work and Rest Round Edit Texts Tests*/
+
     @Test
     public void testRootLayoutInFragmentIsVisible() {
         activityTestRule.launchActivity(new Intent());
         onView(withId(R.id.dashboard_layout)).check(matches(isDisplayed()));
     }
-
 
     @Test
     public void testIfStartTimerButtonIsVisible() {
@@ -59,21 +58,81 @@ public class DashboardTest {
         onView(withId(R.id.start_timer_button)).check(matches(withText("Start")));
     }
 
-
-    @Test
-    public void userChangesMinutes() {
-        onView(withId(R.id.work_round_minutes)).perform(click());
-        onView(withId(R.id.work_round_minutes)).perform(replaceText("01"));
-
-        onView(withId(R.id.work_round_minutes)).check(matches(withText("01")));
-    }
-
     @Test
     public void workIntervalSecondsIsDisplayed() {
 
         onView(withId(R.id.work_round_seconds)).check(matches(isDisplayed()));
     }
 
+
+
+
+    /* Cursor visibility on click */
+    @Test
+    public void cursorIsVisibleOnUserClickRestSeconds() {
+        onView(withId(R.id.rest_round_minutes)).perform(click());
+        onView(withId(R.id.rest_round_minutes)).perform(replaceText("00"));
+
+        onView(withId(R.id.rest_round_minutes)).check(matches(isFocusable()));
+    }
+
+    @Test
+    public void cursorIsVisibleOnUserClickRestMinutes() {
+        onView(withId(R.id.rest_round_minutes)).perform(click());
+        onView(withId(R.id.rest_round_minutes)).perform(replaceText("30"));
+
+        onView(withId(R.id.rest_round_minutes)).check(matches(isFocusable()));
+    }
+
+
+
+
+    /* User Changing the Round Tests manually */
+    @Test
+    public void roundEditTextCanBeChangedManually() {
+        onView(withId(R.id.number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).perform(replaceText("1"));
+
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
+
+
+
+    /* User Changing Number of Rounds using Increment and Decrement */
+    @Test
+    public void incrementNumberOfRoundsTo1() {
+        onView(withId(R.id.increment_number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
+    @Test
+    public void incrementNumberOfRounds11() {
+        for (int i = 0; i <= 10; i++)
+            onView(withId(R.id.increment_number_of_rounds)).perform(click());
+
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("11")));
+    }
+
+    @Test
+    public void roundEditTextDecrement() {
+        onView(withId(R.id.increment_number_of_rounds)).perform(click());
+        onView(withId(R.id.increment_number_of_rounds)).perform(click());
+
+        onView(withId(R.id.decrement_number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
+    @Test
+    public void roundEditTextDecrementShouldRemainZero() {
+        onView(withId(R.id.decrement_number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("0")));
+    }
+
+
+
+
+    /* User Changing Number of Work Rounds manually */
     @Test
     public void userChangesSeconds() {
         onView(withId(R.id.work_round_seconds)).perform(click());
@@ -99,45 +158,143 @@ public class DashboardTest {
     }
 
     @Test
-    public void cursorIsVisibleOnUserClickRestSeconds() {
-        onView(withId(R.id.rest_round_minutes)).perform(click());
-        onView(withId(R.id.rest_round_minutes)).perform(replaceText("00"));
+    public void userChangesMinutes() {
+        onView(withId(R.id.work_round_minutes)).perform(click());
+        onView(withId(R.id.work_round_minutes)).perform(replaceText("1"));
 
-        onView(withId(R.id.rest_round_minutes)).check(matches(isFocusable()));
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("1")));
+    }
+
+
+    /* User Changing Work Rounds via Incrementing and Decrementing Values*/
+    @Test
+    public void incrementWorkRound() {
+        onView(withId(R.id.increment_round_time)).perform(click());
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("01")));
     }
 
     @Test
-    public void cursorIsVisibleOnUserClickRestMinutes() {
-        onView(withId(R.id.rest_round_minutes)).perform(click());
-        onView(withId(R.id.rest_round_minutes)).perform(replaceText("30"));
+    public void incrementWorkRoundTo59() {
+        onView(withId(R.id.work_round_seconds)).perform(replaceText("58"));
+        onView(withId(R.id.increment_round_time)).perform(click());
 
-        onView(withId(R.id.rest_round_minutes)).check(matches(isFocusable()));
-    }
-
-    /* User Changing the Round Tests using On Click */
-    @Test
-    public void roundEdiTextCanBeChangedManually() {
-        onView(withId(R.id.number_of_rounds)).perform(click());
-        onView(withId(R.id.number_of_rounds)).perform(replaceText("01"));
-
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("01")));
-    }
-
-    /* User Changing Number of Rounds using Increment and Decrement */
-    @Test
-    public void incrementNumberOfRoundsTo1() {
-        onView(withId(R.id.increment_number_of_rounds)).perform(click());
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("59")));
     }
 
     @Test
-    public void incrementNumberOfRounds11() {
-        for (int i = 0; i <= 10; i++)
-            onView(withId(R.id.increment_number_of_rounds)).perform(click());
+    public void incrementWorkRoundShouldBeOneMinute() {
+        onView(withId(R.id.work_round_seconds)).perform(replaceText("59"));
 
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("11")));
+        onView(withId(R.id.increment_round_time)).perform(click());
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("00")));
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("01")));
+    }
+
+    @Test
+    public void decrementWorkRound() {
+        onView(withId(R.id.work_round_seconds)).perform(replaceText("01"));
+
+        onView(withId(R.id.decrement_round_time)).perform(click());
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("00")));
+    }
+
+    @Test
+    public void decrementToPreviousMinutes() {
+        onView(withId(R.id.work_round_minutes)).perform(replaceText("01"));
+
+        onView(withId(R.id.decrement_round_time)).perform(click());
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("00")));
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("59")));
+    }
+
+    @Test
+    public void decrementInSameMinutes() {
+        onView(withId(R.id.work_round_minutes)).perform(replaceText("01"));
+        onView(withId(R.id.work_round_seconds)).perform(replaceText("02"));
+
+        onView(withId(R.id.decrement_round_time)).perform(click());
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("01")));
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("01")));
+    }
+
+    @Test
+    public void decrementInDefault() {
+        onView(withId(R.id.decrement_round_time)).perform(click());
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("00")));
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("00")));
     }
 
 
 
+
+
+
+
+
+
+    /* User Changing Rest rounds via Incrementing and Decrementing Values*/
+    @Test
+    public void incrementRestRound() {
+        onView(withId(R.id.increment_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("01")));
+    }
+
+    @Test
+    public void incrementRestRoundTo59() {
+        onView(withId(R.id.rest_round_seconds)).perform(replaceText("58"));
+        onView(withId(R.id.increment_rest_time)).perform(click());
+
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("59")));
+    }
+
+    @Test
+    public void incrementRestRoundShouldBeOneMinute() {
+        onView(withId(R.id.rest_round_seconds)).perform(replaceText("59"));
+
+        onView(withId(R.id.increment_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("00")));
+        onView(withId(R.id.rest_round_minutes)).check(matches(withText("01")));
+    }
+
+    @Test
+    public void decrementRestRound() {
+        onView(withId(R.id.rest_round_seconds)).perform(replaceText("01"));
+
+        onView(withId(R.id.decrement_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("00")));
+    }
+
+    @Test
+    public void decrementToPreviousRestMinutes() {
+        onView(withId(R.id.rest_round_minutes)).perform(replaceText("01"));
+
+        onView(withId(R.id.decrement_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_minutes)).check(matches(withText("00")));
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("59")));
+    }
+
+    @Test
+    public void decrementInSameRestMinutes() {
+        onView(withId(R.id.rest_round_minutes)).perform(replaceText("01"));
+        onView(withId(R.id.rest_round_seconds)).perform(replaceText("02"));
+
+        onView(withId(R.id.decrement_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_minutes)).check(matches(withText("01")));
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("01")));
+    }
+
+    @Test
+    public void decrementInDefaultRestRounds() {
+        onView(withId(R.id.decrement_rest_time)).perform(click());
+        onView(withId(R.id.rest_round_minutes)).check(matches(withText("00")));
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("00")));
+    }
+
+
+    /* User manually inputs values over the limits set on each edit text*/
+    @Test
+    public void addOver100Rounds() {
+        onView(withId(R.id.number_of_rounds)).perform(replaceText("101"));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("100")));
+    }
 }

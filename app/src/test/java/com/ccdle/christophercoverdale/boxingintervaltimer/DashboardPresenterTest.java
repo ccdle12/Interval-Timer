@@ -87,6 +87,7 @@ public class DashboardPresenterTest {
         Assert.assertEquals(0, decrementedNumberOfRounds);
     }
 
+
     /* Tests for the Queue functionality */
     @Test
     public void testTimeHasBeenAddedToQueue()
