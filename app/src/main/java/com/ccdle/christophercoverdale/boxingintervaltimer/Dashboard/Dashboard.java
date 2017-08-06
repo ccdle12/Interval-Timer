@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dagger.DaggerApplication;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
@@ -26,13 +27,19 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
     private final String TAG = "Dashboard";
     private DashboardInterface dashBoardPresenterInterface;
 
-//    @BindView(R.id.count_down_timer) TextView countDownTimerView;
+    //@BindView(R.id.count_down_timer) TextView countDownTimerView;
+    @BindView(R.id.increment_number_of_rounds) ImageView addNewRound;
+    @BindView(R.id.number_of_rounds) EditText numberOfRounds;
+
     @BindView(R.id.work_round_minutes) EditText workIntervalMinutes;
     @BindView(R.id.work_round_seconds) EditText workIntervalSeconds;
+
     @BindView(R.id.rest_round_minutes) EditText restIntervalMinutes;
     @BindView(R.id.rest_round_seconds) EditText restIntervalSeconds;
 
-    /*Dagger Injection Methods*/
+
+
+    /* Dagger Injection Methods */
     @Inject
     public void injectDashboardPresenter(DashboardPresenter dashboardPresenter)
     {
@@ -74,6 +81,19 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
 
 
 
+    /* UI Click Listeners */
+    @OnClick(R.id.increment_number_of_rounds) void incrementNumberOfRounds()
+    {
+        String numberOfRounds = this.numberOfRounds.getText().toString();
+        this.dashBoardPresenterInterface.incrementNumberOfRounds(numberOfRounds);
+    }
+
+    @OnClick(R.id.decrement_number_of_rounds) void decrementNumberOfRounds()
+    {
+        String numberOfRounds = this.numberOfRounds.getText().toString();
+        this.dashBoardPresenterInterface.decrementNumberOfRounds(numberOfRounds);
+    }
+
 
     @OnClick(R.id.start_timer_button) void startTimer()
     {
@@ -89,7 +109,6 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
     @OnClick(R.id.work_round_minutes) void userClicksOnWorkMinutes()
     {
         this.workIntervalMinutes.setCursorVisible(true);
-        this.workIntervalMinutes.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     @OnClick(R.id.work_round_seconds) void userClicksOnWorkSeconds()
@@ -109,10 +128,16 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
 
 
 
-    /* Presenter Callback*/
+
+    /* Presenter Callback */
     @Override
     public void updateTimerDisplay(String time)
     {
-//        this.countDownTimerView.post(() -> countDownTimerView.setText(time));
+       //this.countDownTimerView.post(() -> countDownTimerView.setText(time));
+    }
+
+    @Override
+    public void updateRoundsDisplay(String rounds) {
+        this.numberOfRounds.post(() -> this.numberOfRounds.setText(rounds));
     }
 }

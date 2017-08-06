@@ -114,14 +114,30 @@ public class DashboardTest {
         onView(withId(R.id.rest_round_minutes)).check(matches(isFocusable()));
     }
 
-    /* User Changing the Round Tests*/
+    /* User Changing the Round Tests using On Click */
     @Test
     public void roundEdiTextCanBeChangedManually() {
-        onView(withId(R.id.user_input_of_rounds)).perform(click());
-        onView(withId(R.id.user_input_of_rounds)).perform(replaceText("01"));
+        onView(withId(R.id.number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).perform(replaceText("01"));
 
-        onView(withId(R.id.user_input_of_rounds)).check(matches(withText("01")));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("01")));
     }
+
+    /* User Changing Number of Rounds using Increment and Decrement */
+    @Test
+    public void incrementNumberOfRoundsTo1() {
+        onView(withId(R.id.increment_number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
+    @Test
+    public void incrementNumberOfRounds11() {
+        for (int i = 0; i <= 10; i++)
+            onView(withId(R.id.increment_number_of_rounds)).perform(click());
+
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("11")));
+    }
+
 
 
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Timer.CountDownTimer;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Timer.CountDownTimerInterface;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -31,6 +32,7 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
         this.timerQueue = timerQueue;
     }
 
+
     /* Dashboard Interface */
     @Override
     public void setDashboardCallback(DashboardCallback callback)
@@ -42,9 +44,9 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
     @Override
     public void addToQueue(String workMins, String workSecs, String restMins, String restSecs, String numOfRounds)
     {
-        long workInMillis = this.calculateTotalTimeInMillis(workMins, workSecs);
-        long restInMillis = this.calculateTotalTimeInMillis(restMins, restSecs);
-        int numberOfRounds = Integer.valueOf(numOfRounds);
+        long workInMillis = TimeValuesHelper.calculateTotalTimeInMillis(workMins, workSecs);
+        long restInMillis = TimeValuesHelper.calculateTotalTimeInMillis(restMins, restSecs);
+        int numberOfRounds = TimeValuesHelper.convertStringToInt(numOfRounds);
 
         this.sortAddToQueue(workInMillis, restInMillis, numberOfRounds);
     }
@@ -68,19 +70,6 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
         this.timerQueue.clear();
     }
 
-    private long calculateTotalTimeInMillis(String minutes, String seconds)
-    {
-        long mins = Long.parseLong(minutes);
-        long secs = Long.parseLong(seconds);
-
-        long minsInMillis = (mins * 60) * 1000;
-        long secsInMillis = secs * 1000;
-
-        long totalTimeInMillis = minsInMillis + secsInMillis;
-
-        return totalTimeInMillis;
-    }
-
 
     @Override
     public void initializeTimer()
@@ -88,19 +77,41 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
         this.initializeNextRound();
 
         this.countDownTimer.startTheCountDownTimer();
-        Log.d(TAG, "Count Down Timer Starting");
     }
+
 
     private void initializeNextRound()
     {
         long nextRound = (Long) this.pollQueue();
-        this.countDownTimer = new CountDownTimer(nextRound);
+        this.initializeCountDownTimer(nextRound);
         this.setCountDownTimerCallback();
+    }
+
+    private void initializeCountDownTimer(long nextRound)
+    {
+        this.countDownTimer = new CountDownTimer(nextRound);
     }
 
     private void setCountDownTimerCallback()
     {
         this.countDownTimer.setCallback(this);
+    }
+
+
+
+    @Override
+    public void incrementNumberOfRounds(String numOfRounds)
+    {
+        int roundsAsInt = TimeValuesHelper.incrementValue(numOfRounds);
+
+        String roundsAsString = TimeValuesHelper.convertIntToString(roundsAsInt);
+
+        this.dashboardCallback.updateRoundsDisplay(roundsAsString);
+    }
+
+    @Override
+    public void decrementNumberOfRounds(String numOfRounds) {
+
     }
 
 
@@ -120,36 +131,15 @@ public class DashboardPresenter implements DashboardInterface, CountDownTimerInt
     @Override
     public void formatRemainingTime(long remainingTime)
     {
-        remainingTime = remainingTime / 1000;
-        int remainingMinutes = (int) remainingTime / 60;
-        int remainingSeconds = (int) remainingTime - (60 * remainingMinutes);
+        int remainingMinutes = TimeValuesHelper.formatRemainingMinutes(remainingTime);
+        int remainingSeconds = TimeValuesHelper.formatRemainingSeconds(remainingTime);
 
-        String minutesForDisplay = formatMinutes(remainingMinutes);
-        String secondsForDisplay = formatSeconds(remainingSeconds);
+        String minutesForDisplay = TimeValuesHelper.formatMinutesToString(remainingMinutes);
+        String secondsForDisplay = TimeValuesHelper.formatSecondsToString(remainingSeconds);
 
         String formattedDisplay = String.format("%s:%s", minutesForDisplay, secondsForDisplay);
 
         this.dashboardCallback.updateTimerDisplay(formattedDisplay);
-    }
-
-    public String formatMinutes(int remainingMinutes)
-    {
-        return (remainingMinutes < 10) ? String.format("0%s", remainingMinutes) : String.valueOf(remainingMinutes);
-    }
-
-    public String formatSeconds(int remainingSeconds)
-    {
-        String secondsFormatted;
-
-        if (remainingSeconds < 10) {
-            secondsFormatted = String.format("0%s", remainingSeconds);
-        } else if (remainingSeconds > 59) {
-            secondsFormatted = "00";
-        } else {
-            secondsFormatted = String.valueOf(remainingSeconds);
-        }
-
-        return secondsFormatted;
     }
 
     @Override

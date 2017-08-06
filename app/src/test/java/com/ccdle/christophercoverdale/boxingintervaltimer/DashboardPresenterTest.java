@@ -2,6 +2,7 @@ package com.ccdle.christophercoverdale.boxingintervaltimer;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Timer.CountDownTimerInterface;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
 import junit.framework.Assert;
 
@@ -24,59 +25,66 @@ public class DashboardPresenterTest {
 
     }
 
-    /*Unit Tests for formatting Minutes and Seconds*/
+    /* Unit Tests for formatting Minutes and Seconds */
     @Test
     public void testFormatSeconds() {
-        String seconds = this.dashboardPresenter.formatSeconds(5);
+        String seconds = TimeValuesHelper.formatSecondsToString(5);
         Assert.assertEquals("05", seconds);
     }
 
     @Test
     public void testFormatSeconds2() {
-        String seconds = this.dashboardPresenter.formatSeconds(30);
+        String seconds = TimeValuesHelper.formatSecondsToString(30);
         Assert.assertEquals("30", seconds);
     }
 
     @Test
     public void testFormatSeconds3() {
-        String seconds = this.dashboardPresenter.formatSeconds(0);
+        String seconds = TimeValuesHelper.formatSecondsToString(0);
         Assert.assertEquals("00", seconds);
     }
 
     @Test
     public void testFormatSeconds4() {
-        String seconds = this.dashboardPresenter.formatSeconds(61);
+        String seconds = TimeValuesHelper.formatSecondsToString(61);
         Assert.assertEquals("00", seconds);
     }
 
     @Test
     public void testFormatSeconds5() {
-        String seconds = this.dashboardPresenter.formatSeconds(59);
+        String seconds = TimeValuesHelper.formatSecondsToString(59);
         Assert.assertEquals("59", seconds);
     }
 
     @Test
     public void testFormatMinutes() {
-        String minutes = this.dashboardPresenter.formatMinutes(61);
+        String minutes = TimeValuesHelper.formatMinutesToString(61);
         Assert.assertEquals("61", minutes);
     }
 
     @Test
     public void testFormatMinutes2() {
-        String minutes = this.dashboardPresenter.formatMinutes(10);
+        String minutes = TimeValuesHelper.formatMinutesToString(10);
         Assert.assertEquals("10", minutes);
     }
 
     @Test
     public void testFormatMinutes3() {
-        String minutes = this.dashboardPresenter.formatMinutes(01);
+        String minutes = TimeValuesHelper.formatMinutesToString(01);
         Assert.assertEquals("01", minutes);
     }
 
     @Test
     public void testFormatMinutes4() {
-        String minutes = this.dashboardPresenter.formatMinutes(0);
+        String minutes = TimeValuesHelper.formatMinutesToString(0);
         Assert.assertEquals("00", minutes);
+    }
+
+    /* Tests for increment and decrement rounds, work rounds and rest rounds */
+    @Test
+    public void decrementNumberOfRounds() {
+        int decrementedNumberOfRounds = TimeValuesHelper.decrementValue("1");
+        Assert.assertEquals(0, decrementedNumberOfRounds);
     }
 
     /* Tests for the Queue functionality */
