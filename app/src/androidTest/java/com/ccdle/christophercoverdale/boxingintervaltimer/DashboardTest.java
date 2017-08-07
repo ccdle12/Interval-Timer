@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.doubleClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -103,7 +104,7 @@ public class DashboardTest {
     @Test
     public void incrementNumberOfRoundsTo1() {
         onView(withId(R.id.increment_number_of_rounds)).perform(click());
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("2")));
     }
 
     @Test
@@ -111,7 +112,7 @@ public class DashboardTest {
         for (int i = 0; i <= 10; i++)
             onView(withId(R.id.increment_number_of_rounds)).perform(click());
 
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("11")));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("12")));
     }
 
     @Test
@@ -120,13 +121,13 @@ public class DashboardTest {
         onView(withId(R.id.increment_number_of_rounds)).perform(click());
 
         onView(withId(R.id.decrement_number_of_rounds)).perform(click());
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("2")));
     }
 
     @Test
-    public void roundEditTextDecrementShouldRemainZero() {
+    public void roundEditTextDecrementShouldRemain1() {
         onView(withId(R.id.decrement_number_of_rounds)).perform(click());
-        onView(withId(R.id.number_of_rounds)).check(matches(withText("0")));
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
     }
 
 
@@ -182,12 +183,12 @@ public class DashboardTest {
     }
 
     @Test
-    public void incrementWorkRoundShouldBeOneMinute() {
+    public void incrementWorkRoundShouldBeTwoMinutes() {
         onView(withId(R.id.work_round_seconds)).perform(replaceText("59"));
 
         onView(withId(R.id.increment_round_time)).perform(click());
         onView(withId(R.id.work_round_seconds)).check(matches(withText("00")));
-        onView(withId(R.id.work_round_minutes)).check(matches(withText("01")));
+        onView(withId(R.id.work_round_minutes)).check(matches(withText("02")));
     }
 
     @Test
@@ -221,7 +222,7 @@ public class DashboardTest {
     public void decrementInDefault() {
         onView(withId(R.id.decrement_round_time)).perform(click());
         onView(withId(R.id.work_round_minutes)).check(matches(withText("00")));
-        onView(withId(R.id.work_round_seconds)).check(matches(withText("00")));
+        onView(withId(R.id.work_round_seconds)).check(matches(withText("59")));
     }
 
 
@@ -236,7 +237,7 @@ public class DashboardTest {
     @Test
     public void incrementRestRound() {
         onView(withId(R.id.increment_rest_time)).perform(click());
-        onView(withId(R.id.rest_round_seconds)).check(matches(withText("01")));
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("31")));
     }
 
     @Test
@@ -267,6 +268,7 @@ public class DashboardTest {
     @Test
     public void decrementToPreviousRestMinutes() {
         onView(withId(R.id.rest_round_minutes)).perform(replaceText("01"));
+        onView(withId(R.id.rest_round_seconds)).perform(replaceText("00"));
 
         onView(withId(R.id.decrement_rest_time)).perform(click());
         onView(withId(R.id.rest_round_minutes)).check(matches(withText("00")));
@@ -287,14 +289,21 @@ public class DashboardTest {
     public void decrementInDefaultRestRounds() {
         onView(withId(R.id.decrement_rest_time)).perform(click());
         onView(withId(R.id.rest_round_minutes)).check(matches(withText("00")));
-        onView(withId(R.id.rest_round_seconds)).check(matches(withText("00")));
+        onView(withId(R.id.rest_round_seconds)).check(matches(withText("29")));
     }
 
-
-    /* User manually inputs values over the limits set on each edit text*/
     @Test
-    public void addOver100Rounds() {
-        onView(withId(R.id.number_of_rounds)).perform(replaceText("101"));
+    public void roundsShouldBeResetTo100() {
+        onView(withId(R.id.number_of_rounds)).perform(replaceText("100"));
+        onView(withId(R.id.increment_number_of_rounds)).perform(click());
         onView(withId(R.id.number_of_rounds)).check(matches(withText("100")));
     }
+
+    @Test
+    public void roundsShouldBeResetTo1(){
+        onView(withId(R.id.number_of_rounds)).perform(replaceText("1"));
+        onView(withId(R.id.decrement_number_of_rounds)).perform(click());
+        onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
 }

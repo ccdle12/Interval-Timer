@@ -5,10 +5,14 @@ package com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard;
  */
 
 public interface DashboardInterface {
-    void setDashboardCallback(DashboardCallback callback);
 
+    //------------------------- Will move below to its own Presenter -----------------------------//
     void addToQueue(String workMins, String workSecs, String restMins, String restSecs, String numberOfRounds);
     void initializeTimer();
+    void pauseAndResumeTimer();
+    //------------------------- Will move above to its own Presenter -----------------------------//
+
+    void setDashboardCallback(DashboardCallback callback);
 
     void incrementNumberOfRounds(String numOfRounds);
     void decrementNumberOfRounds(String numOfRounds);
@@ -20,15 +24,26 @@ public interface DashboardInterface {
     void decrementRestRoundTime(String minutes, String seconds);
 
     void checkRoundLimits(String rounds);
+    void checkMinutesLimit(String minutes, int editTextID);
+    void checkSecondsLimit(String minutes, String seconds, int editTextID);
 
-    void pauseAndResumeTimer();
+
+
 
 
     interface DashboardCallback {
+        //------------------------- Will move below to its own Presenter -----------------------------//
         void updateTimerDisplay(String time);
+        //------------------------- Will move above to its own Presenter -----------------------------//
 
         void updateRoundsDisplay(String rounds);
-        void updateWorkRoundDisplay(String formattedMinutes, String formattedSeconds);
-        void updateRestRoundDisplay(String formattedMinutes, String formattedSeconds);
+        void updateWorkRoundDisplayFromIncrement(String formattedMinutes, String formattedSeconds);
+        void updateRestRoundDisplayFromIncrement(String formattedMinutes, String formattedSeconds);
+
+        void updateWorkMinutesDisplay(String formattedMinutes);
+        void updateWorkSecondsDisplay(String formattedSeconds);
+
+        void updateRestMinutesDisplay(String formattedMinutes);
+        void updateRestSecondsDisplay(String formattedSeconds);
     }
 }

@@ -103,7 +103,7 @@
             android:digits="1234567890"
             android:gravity="center"
             android:inputType="phone"
-            android:text="00"
+            android:text="@string/default_work_minutes"
             android:textSize="32sp" />
 
         <TextView
@@ -122,7 +122,7 @@
             android:digits="1234567890"
             android:gravity="center"
             android:inputType="phone"
-            android:text="00"
+            android:text="@string/default_work_seconds"
             android:textSize="32sp" />
     </LinearLayout>
 
@@ -227,7 +227,7 @@
         android:digits="1234567890"
         android:gravity="center"
         android:inputType="phone"
-        android:text="00"
+        android:text="@string/default_rest_minutes"
         android:textSize="32sp" />
 
     <EditText
@@ -242,7 +242,7 @@
         android:digits="1234567890"
         android:gravity="center"
         android:inputType="phone"
-        android:text="00"
+        android:text="@string/default_rest_seconds"
         android:textSize="32sp" />
 
 </RelativeLayout>
