@@ -1,18 +1,17 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard;
 
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
+
 /**
  * Created by USER on 5/14/2017.
  */
 
-public interface DashboardInterface {
-
-    //------------------------- Will move below to its own Presenter -----------------------------//
-    void addToQueue(String workMins, String workSecs, String restMins, String restSecs, String numberOfRounds);
-    void initializeTimer();
-    void pauseAndResumeTimer();
-    //------------------------- Will move above to its own Presenter -----------------------------//
+public interface DashboardInterface
+{
 
     void setDashboardCallback(DashboardCallback callback);
+    void sendPackageModel(PackageModel packageModel);
 
     void incrementNumberOfRounds(String numOfRounds);
     void decrementNumberOfRounds(String numOfRounds);
@@ -27,15 +26,11 @@ public interface DashboardInterface {
     void checkMinutesLimit(String minutes, int editTextID);
     void checkSecondsLimit(String minutes, String seconds, int editTextID);
 
+    void startTheTimer(RoundsModel roundsModel);
 
 
-
-
-    interface DashboardCallback {
-        //------------------------- Will move below to its own Presenter -----------------------------//
-        void updateTimerDisplay(String time);
-        //------------------------- Will move above to its own Presenter -----------------------------//
-
+    interface DashboardCallback
+    {
         void updateRoundsDisplay(String rounds);
         void updateWorkRoundDisplayFromIncrement(String formattedMinutes, String formattedSeconds);
         void updateRestRoundDisplayFromIncrement(String formattedMinutes, String formattedSeconds);

@@ -1,7 +1,9 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPresenter;
-import com.ccdle.christophercoverdale.boxingintervaltimer.Timer.CountDownTimerInterface;
+import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimerInterface;
+import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplay;
+import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
 import junit.framework.Assert;
@@ -21,7 +23,7 @@ public class DashboardPresenterTest {
 
     @Before
     public void setUpObjects() {
-        this.dashboardPresenter = new DashboardPresenter(new LinkedList<>());
+        this.dashboardPresenter = new DashboardPresenter(new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay()));
 
     }
 
@@ -88,79 +90,4 @@ public class DashboardPresenterTest {
     }
 
 
-    /* Tests for the Queue functionality */
-    @Test
-    public void testTimeHasBeenAddedToQueue()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "1");
-
-        Assert.assertEquals(Long.valueOf(5000), this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueIsFIFO1()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "1");
-
-        this.dashboardPresenter.pollQueue();
-
-        Assert.assertEquals(Long.valueOf(2000), this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueIsFIFO2()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "1");
-
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-
-        Assert.assertEquals(null, this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueIsNull()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "1");
-
-        this.dashboardPresenter.clearQueue();
-
-        Assert.assertEquals(null, this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueIsReturnSecondRound()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "2");
-
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-
-        Assert.assertEquals(Long.valueOf(5000), this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueIsReturnSecondRoundRest()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "2");
-
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-
-        Assert.assertEquals(Long.valueOf(2000), this.dashboardPresenter.pollQueue());
-    }
-
-    @Test
-    public void testQueueShouldReturnNull()
-    {
-        this.dashboardPresenter.addToQueue("00", "05", "00", "02", "2");
-
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-        this.dashboardPresenter.pollQueue();
-
-        Assert.assertEquals(null, this.dashboardPresenter.pollQueue());
-    }
 }

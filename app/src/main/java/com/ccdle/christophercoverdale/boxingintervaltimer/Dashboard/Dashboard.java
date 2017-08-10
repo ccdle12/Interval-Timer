@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dagger.DaggerApplication;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Dagger.InjectDaggerObjects;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 
 import javax.inject.Inject;
 
@@ -23,10 +27,14 @@ import butterknife.OnClick;
  * Created by USER on 5/14/2017.
  */
 
-public class Dashboard extends Fragment implements DashboardInterface.DashboardCallback {
+public class Dashboard extends android.app.Fragment implements DashboardInterface.DashboardCallback, InjectDaggerObjects {
     private final String TAG = "Dashboard";
+
+    private PackageModel packageModel;
+    private RoundsModel roundsModel;
     private DashboardInterface dashBoardPresenterInterface;
 
+    @BindView(R.id.increment_number_of_rounds) ImageView incrementRoundsBtn;
     @BindView(R.id.number_of_rounds) EditText editTextRounds;
 
     @BindView(R.id.increment_rest_time) ImageView incrementRoundTimeBtn;
@@ -52,22 +60,43 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
     public void onStart()
     {
         super.onStart();
+
+        this.initializePackageModel();
         this.injectObjects();
 
         this.setDashboardPresenterCallback();
+        this.sendPackageModelToPresenter();
         this.initializeUIListeners();
     }
 
+    private void initializePackageModel()
+    {
+        this.packageModel = new PackageModel(getActivity());
+    }
+
+
     /* Dagger Injection Methods */
+
+    @Override
+    public void injectObjects() {
+        DaggerApplication.component().inject(this);
+    }
+
     @Inject
     public void injectDashboardPresenter(DashboardPresenter dashboardPresenter)
     {
         this.dashBoardPresenterInterface = dashboardPresenter;
     }
 
-    private void injectObjects()
+    @Inject
+    public void injectRoundsModel(RoundsModel roundsModel)
     {
-        DaggerApplication.component().inject(this);
+        this.roundsModel = roundsModel;
+    }
+
+    private void sendPackageModelToPresenter()
+    {
+        this.dashBoardPresenterInterface.sendPackageModel(this.packageModel);
     }
 
     private void setDashboardPresenterCallback()
@@ -88,6 +117,31 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
 
 
     /* UI Click Listeners */
+    @OnClick(R.id.number_of_rounds) void userClicksOnRounds()
+    {
+        this.editTextRounds.setCursorVisible(true);
+    }
+
+    @OnClick(R.id.work_round_minutes) void userClicksOnWorkMinutes()
+    {
+        this.workIntervalMinutes.setCursorVisible(true);
+    }
+
+    @OnClick(R.id.work_round_seconds) void userClicksOnWorkSeconds()
+    {
+        this.workIntervalSeconds.setCursorVisible(true);
+    }
+
+    @OnClick(R.id.rest_round_minutes) void userClicksOnRestMinutes()
+    {
+        this.restIntervalMinutes.setCursorVisible(true);
+    }
+
+    @OnClick(R.id.rest_round_seconds) void userClicksOnRestSeconds()
+    {
+        this.restIntervalSeconds.setCursorVisible(true);
+    }
+
     @OnClick(R.id.increment_number_of_rounds) void incrementNumberOfRounds()
     {
         String rounds = this.editTextRounds.getText().toString();
@@ -133,31 +187,27 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
         this.dashBoardPresenterInterface.decrementRestRoundTime(restMinutes, restSeconds);
     }
 
-
-    @OnClick(R.id.number_of_rounds) void userClicksOnRounds()
+    @OnClick(R.id.start_timer_button) void startTheTimer()
     {
-        this.editTextRounds.setCursorVisible(true);
+        this.initRoundsModel();
+        this.dashBoardPresenterInterface.startTheTimer(this.roundsModel);
     }
 
-    @OnClick(R.id.work_round_minutes) void userClicksOnWorkMinutes()
+    private void initRoundsModel()
     {
-        this.workIntervalMinutes.setCursorVisible(true);
+        String workMins = this.workIntervalMinutes.getText().toString();
+        String workSecs = this.workIntervalSeconds.getText().toString();
+        String restMins = this.restIntervalMinutes.getText().toString();
+        String restSecs = this.restIntervalSeconds.getText().toString();
+        String rounds = this.editTextRounds.getText().toString();
+
+        this.roundsModel.setWorkMins(workMins);
+        this.roundsModel.setWorkSecs(workSecs);
+        this.roundsModel.setRestMins(restMins);
+        this.roundsModel.setRestSecs(restSecs);
+        this.roundsModel.setRounds(rounds);
     }
 
-    @OnClick(R.id.work_round_seconds) void userClicksOnWorkSeconds()
-    {
-        this.workIntervalSeconds.setCursorVisible(true);
-    }
-
-    @OnClick(R.id.rest_round_minutes) void userClicksOnRestMinutes()
-    {
-        this.restIntervalMinutes.setCursorVisible(true);
-    }
-
-    @OnClick(R.id.rest_round_seconds) void userClicksOnRestSeconds()
-    {
-        this.restIntervalSeconds.setCursorVisible(true);
-    }
 
 
     /* Unfocus UI listeners */
@@ -288,21 +338,20 @@ public class Dashboard extends Fragment implements DashboardInterface.DashboardC
     //------------------------- Will move below to its own Presenter -----------------------------//
     //@BindView(R.id.count_down_timer) TextView countDownTimerView;
 
-    @Override
-    public void updateTimerDisplay(String time)
-    {
-        //this.countDownTimerView.post(() -> countDownTimerView.setText(time));
-    }
 
-    @OnClick(R.id.start_timer_button) void startTimer()
-    {
-        String workIntervalMins = this.workIntervalMinutes.getText().toString();
-        String workIntervalSecs = this.workIntervalSeconds.getText().toString();
-        String restIntervalMins = this.restIntervalMinutes.getText().toString();
-        String restIntervalSecs = this.restIntervalSeconds.getText().toString();
 
-        this.dashBoardPresenterInterface.addToQueue(workIntervalMins, workIntervalSecs, restIntervalMins, restIntervalSecs, "2");
-        this.dashBoardPresenterInterface.initializeTimer();
-    }
+
+
+
+//    @OnClick(R.id.start_timer_button) void startTimer()
+//    {
+//        String workIntervalMins = this.workIntervalMinutes.getText().toString();
+//        String workIntervalSecs = this.workIntervalSeconds.getText().toString();
+//        String restIntervalMins = this.restIntervalMinutes.getText().toString();
+//        String restIntervalSecs = this.restIntervalSeconds.getText().toString();
+//
+//        this.dashBoardPresenterInterface.addToQueue(workIntervalMins, workIntervalSecs, restIntervalMins, restIntervalSecs, "2");
+//        this.dashBoardPresenterInterface.initializeTimer();
+//    }
     //------------------------- Will move above to its own Presenter -----------------------------//
 }

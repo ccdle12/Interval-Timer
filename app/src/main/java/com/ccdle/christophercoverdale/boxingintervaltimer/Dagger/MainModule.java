@@ -3,6 +3,9 @@ package com.ccdle.christophercoverdale.boxingintervaltimer.Dagger;
 import android.app.Application;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplay;
+import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 
 import java.util.LinkedList;
 
@@ -32,7 +35,13 @@ public class MainModule {
     @Provides
     @Singleton
     public DashboardPresenter providesMainMenuPresenter() {
-        return new DashboardPresenter(new LinkedList<Long>());
+        return new DashboardPresenter(new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay()));
+    }
+
+    @Provides
+    @Singleton
+    public TimerDisplayPresenter providesTimerDisplayPresenter() {
+        return new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay());
     }
 
     @Provides
@@ -40,4 +49,12 @@ public class MainModule {
     public LinkedList<String> providesTimerQueue() {
         return new LinkedList<>();
     }
+
+    @Provides
+    @Singleton
+    public RoundsModel provideRoundsModel() { return new RoundsModel(); }
+
+    @Provides
+    @Singleton
+    public TimerDisplay providesTimerDisplay() { return new TimerDisplay(); }
 }

@@ -300,10 +300,25 @@ public class DashboardTest {
     }
 
     @Test
-    public void roundsShouldBeResetTo1(){
+    public void roundsShouldBeResetTo1() {
         onView(withId(R.id.number_of_rounds)).perform(replaceText("1"));
         onView(withId(R.id.decrement_number_of_rounds)).perform(click());
         onView(withId(R.id.number_of_rounds)).check(matches(withText("1")));
+    }
+
+    /* Navigate to the next fragment */
+    @Test
+    public void shouldNavigateToNextFragment() {
+        onView(withId(R.id.start_timer_button)).perform(click());
+
+        onView(withId(R.id.timer_display)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldShow12RoundsAsTotalRounds() {
+        onView(withId(R.id.start_timer_button)).perform(click());
+
+        onView(withId(R.id.total_rounds)).check(matches(withText("12")));
     }
 
 }

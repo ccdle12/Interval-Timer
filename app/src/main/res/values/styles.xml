@@ -8,4 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DisplayType112">
+        <item name="android:textSize">112sp</item>
+    </style>
+
+    <style name="DisplayType56">
+        <item name="android:textSize">56sp</item>
+    </style>
+
+    <style name="DisplayType34">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="Headline24">
+        <item name="android:textSize">24sp</item>
+
+    </style><style name="Title20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

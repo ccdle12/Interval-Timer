@@ -8,8 +8,8 @@
     <string name="default_rest_minutes">00</string>
     <string name="default_rest_seconds">30</string>
     <string name="colon_for_time">:</string>
-    <string name="round">Rounds</string>
     <string name="default_number_of_rounds">1</string>
     <string name="round_time">Round Time</string>
     <string name="rest_time">Rest Time</string>
+    <string name="round_string">Round</string>
 </resources>

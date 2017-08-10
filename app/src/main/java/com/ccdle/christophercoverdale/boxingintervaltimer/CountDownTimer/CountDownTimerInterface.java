@@ -1,4 +1,4 @@
-package com.ccdle.christophercoverdale.boxingintervaltimer.Timer;
+package com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer;
 
 /**
  * Created by USER on 5/30/2017.

@@ -1,4 +1,4 @@
-package com.ccdle.christophercoverdale.boxingintervaltimer.Timer;
+package com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer;
 
 import android.util.Log;
 
@@ -23,7 +23,6 @@ public class CountDownTimer extends android.os.CountDownTimer implements CountDo
     @Override
     public void onTick(long millisUntilFinished)
     {
-
         if (this.hasPaused) {
             if (remainingTime <= 0) {
                 this.terminateTimer();

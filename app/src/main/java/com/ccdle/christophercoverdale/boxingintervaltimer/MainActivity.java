@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.getSupportFragmentManager()
+        this.getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, new Dashboard())
                 .commit();
