@@ -27,7 +27,7 @@ public interface DashboardInterface
     void checkSecondsLimit(String minutes, String seconds, int editTextID);
 
     void startTheTimer(RoundsModel roundsModel);
-
+    void launchCustomRounds();
 
     interface DashboardCallback
     {

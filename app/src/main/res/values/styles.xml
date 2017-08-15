@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -23,8 +23,16 @@
     <style name="Headline24">
         <item name="android:textSize">24sp</item>
 
-    </style><style name="Title20">
+    </style>
+
+    <style name="Title20">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="PaddingLeft16">
+        <item name="android:paddingLeft">16dp</item>
+    </style>
+
+
 
 </resources>

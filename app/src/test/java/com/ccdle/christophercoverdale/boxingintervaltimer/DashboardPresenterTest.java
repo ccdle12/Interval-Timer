@@ -4,6 +4,7 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPre
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimerInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplay;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
 import junit.framework.Assert;
@@ -23,7 +24,7 @@ public class DashboardPresenterTest {
 
     @Before
     public void setUpObjects() {
-        this.dashboardPresenter = new DashboardPresenter(new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay()));
+        this.dashboardPresenter = new DashboardPresenter(new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay(), new SoundFX()));
 
     }
 

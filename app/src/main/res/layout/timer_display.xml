@@ -5,50 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/round_display"
-        style="@style/DisplayType34"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="59dp"
-        android:text="@string/round_string"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/count_down_timer"
-        android:layout_alignStart="@+id/count_down_timer" />
-
-    <TextView
-        android:id="@+id/remaining_rounds"
-        style="@style/DisplayType34"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="12"
+        android:id="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
         android:layout_above="@+id/round_indicator"
-        android:layout_toRightOf="@+id/round_display"
-        android:layout_toEndOf="@+id/round_display"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp" />
+        android:layout_alignLeft="@+id/pause_and_go"
+        android:layout_alignStart="@+id/pause_and_go">
 
-    <TextView
-        android:id="@+id/back_slash_rounds"
-        style="@style/DisplayType34"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="/"
-        android:layout_above="@+id/round_indicator"
-        android:layout_toRightOf="@+id/remaining_rounds"
-        android:layout_toEndOf="@+id/remaining_rounds" />
+        <TextView
+            android:id="@+id/round_display"
+            style="@style/DisplayType34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:text="@string/round_string"/>
 
-    <TextView
-        android:id="@+id/total_rounds"
-        style="@style/DisplayType34"
-        android:text="12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/round_indicator"
-        android:layout_toRightOf="@+id/back_slash_rounds"
-        android:layout_toEndOf="@+id/back_slash_rounds" />
+        <TextView
+            style="@style/DisplayType34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "/>
+
+        <TextView
+            android:id="@+id/remaining_rounds"
+            style="@style/DisplayType34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/back_slash_rounds"
+            style="@style/DisplayType34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/total_rounds"
+            style="@style/DisplayType34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+    </LinearLayout>
 
 
 
@@ -58,37 +59,37 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/default_time"
-        android:layout_below="@+id/round_indicator"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/round_indicator"
         style="@style/Headline24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Round Indicator"
-        android:layout_below="@+id/round_display"
+        android:text="Work"
+        android:layout_above="@+id/count_down_timer"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/pause_and_go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:text="Pause"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/count_down_timer"
-        android:layout_toLeftOf="@+id/back_slash_rounds"
-        android:layout_toStartOf="@+id/back_slash_rounds" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:elevation="24dp"
+        android:text="Pause" />
 
     <Button
         android:id="@+id/Reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_alignLeft="@+id/pause_and_go"
         android:layout_alignStart="@+id/pause_and_go"
         android:layout_below="@+id/pause_and_go"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="14dp"
+        android:elevation="24dp"
         android:text="Reset" />
 
 

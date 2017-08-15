@@ -7,7 +7,8 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
  * Created by christophercoverdale on 08/08/2017.
  */
 
-public interface TimerDisplayPresenterInterface {
+public interface TimerDisplayPresenterInterface
+{
 
     void launchTimerDisplay();
     void sendPackageModel(PackageModel packageModel);

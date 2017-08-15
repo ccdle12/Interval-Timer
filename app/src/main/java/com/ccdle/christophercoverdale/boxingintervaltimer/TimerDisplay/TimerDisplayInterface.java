@@ -12,6 +12,8 @@ public interface TimerDisplayInterface
     void initializeTimer();
     void pauseAndResumeTimer();
 
+    void resetTimer();
+
     interface TimerDisplayCallback
     {
         void setPresenterInterface(TimerDisplayInterface timerDisplayPresenter);
@@ -20,5 +22,16 @@ public interface TimerDisplayInterface
         void updateRemainingRoundsDisplay(String remainingRounds);
         void updateTimerDisplay(String time);
         void updateRoundIndicator(String roundIndicator);
+
+        void hideUIElements();
+        void showUIElements();
+        void showRoundIndicatorAsIntroIndicator(String getReady);
+
+        void showSnackbarPressPause();
+
+        void updateBackgroundColor(int color);
+
+        void updatePauseButtonStop();
+        void updatePauseButtonGo();
     }
 }

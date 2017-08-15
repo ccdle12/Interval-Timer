@@ -2,7 +2,9 @@ package com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimerInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 
 import junit.framework.Assert;
 
@@ -118,4 +120,15 @@ public class TimerDisplayPresenterTest
 
         Assert.assertEquals(null, this.timerDisplayPresenter.pollQueue());
     }
+
+    @Test
+    public void fiveSecondIntroShouldBeFirst()
+    {
+        this.timerDisplayPresenter.addFiveSecondIntro();
+        this.timerDisplayPresenter.addToQueue(this.roundsModel1);
+
+        RoundType roundType = (RoundType) this.timerDisplayPresenter.pollQueue();
+        Assert.assertEquals(roundType.getRoundTime(), 5000);
+    }
+
 }

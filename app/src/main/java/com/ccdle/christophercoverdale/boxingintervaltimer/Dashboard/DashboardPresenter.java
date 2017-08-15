@@ -1,5 +1,6 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard;
 
+import com.ccdle.christophercoverdale.boxingintervaltimer.CustomRounds.CustomRoundsPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
@@ -14,13 +15,17 @@ import javax.inject.Inject;
 public class DashboardPresenter implements DashboardInterface {
 
     private DashboardCallback dashboardCallback;
+
     private TimerDisplayPresenterInterface timerDisplayPresenterInterface;
+    private CustomRoundsPresenterInterface customRoundsPresenterInterface;
+
     private PackageModel packageModel;
 
     @Inject
-    public DashboardPresenter(TimerDisplayPresenter timerDisplay)
+    public DashboardPresenter(TimerDisplayPresenter timerDisplay, CustomRoundsPresenter customRoundsPresenter)
     {
         this.timerDisplayPresenterInterface = timerDisplay;
+        this.customRoundsPresenterInterface = customRoundsPresenter;
     }
 
     /* Dashboard Interface */
@@ -298,6 +303,13 @@ public class DashboardPresenter implements DashboardInterface {
         this.sendRoundsModel(roundsModel);
         this.launchTimerDisplay();
 
+    }
+
+    @Override
+    public void launchCustomRounds()
+    {
+        this.customRoundsPresenterInterface.sendPackageModel(this.packageModel);
+        this.customRoundsPresenterInterface.launchCustomRounds();
     }
 
     private void launchTimerDisplay()

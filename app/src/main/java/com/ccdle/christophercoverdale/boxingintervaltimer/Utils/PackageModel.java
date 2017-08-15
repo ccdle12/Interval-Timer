@@ -20,4 +20,5 @@ public class PackageModel
     public Activity getActivity() {
         return activity;
     }
+
 }

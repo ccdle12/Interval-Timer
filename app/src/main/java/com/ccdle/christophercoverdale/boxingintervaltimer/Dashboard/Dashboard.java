@@ -1,7 +1,10 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 
@@ -69,16 +72,19 @@ public class Dashboard extends android.app.Fragment implements DashboardInterfac
         this.initializeUIListeners();
     }
 
+
     private void initializePackageModel()
     {
         this.packageModel = new PackageModel(getActivity());
+
     }
 
 
     /* Dagger Injection Methods */
 
     @Override
-    public void injectObjects() {
+    public void injectObjects()
+    {
         DaggerApplication.component().inject(this);
     }
 
@@ -191,6 +197,11 @@ public class Dashboard extends android.app.Fragment implements DashboardInterfac
     {
         this.initRoundsModel();
         this.dashBoardPresenterInterface.startTheTimer(this.roundsModel);
+    }
+
+    @OnClick(R.id.custom_rounds) void launchCustomRounds()
+    {
+        this.dashBoardPresenterInterface.launchCustomRounds();
     }
 
     private void initRoundsModel()
