@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by christophercoverdale on 14/08/2017.
@@ -32,14 +36,18 @@ public class CustomRounds extends Fragment implements CustomRoundsInterface.Cust
 
     private CustomRoundsInterface customRoundsInterface;
 
+    private View rootView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.custom_rounds, container, false);
-        ButterKnife.bind(this, rootView);
+        this.rootView = inflater.inflate(R.layout.custom_rounds, container, false);
+        ButterKnife.bind(this, this.rootView);
 
-        return rootView;
+        this.sendViewToPresenter();
+
+        return this.rootView;
     }
 
     @Override
@@ -52,12 +60,20 @@ public class CustomRounds extends Fragment implements CustomRoundsInterface.Cust
 
         this.recyclerView.setAdapter(this.customRoundsInterface.getCustomRoundsAdapter());
         this.recyclerView.setLayoutManager(this.customRoundsInterface.getRecyclerViewLayoutManager());
+
     }
 
     @Override
     public void setInterface(CustomRoundsInterface customRoundsInterface)
     {
         this.customRoundsInterface = customRoundsInterface;
+        this.sendViewToPresenter();
+    }
+
+    private void sendViewToPresenter()
+    {
+        this.customRoundsInterface.getView(this.rootView);
+
     }
 
 
@@ -88,6 +104,10 @@ public class CustomRounds extends Fragment implements CustomRoundsInterface.Cust
         this.customRoundsInterface.hideAddNewFabAnim(this.addNewRowFAB);
     }
 
+    @OnClick(R.id.run_timer) void runTimer()
+    {
+        this.customRoundsInterface.launchTimer();
+    }
 
     @OnClick(R.id.add_new_row) void addNewRow()
     {
@@ -98,4 +118,11 @@ public class CustomRounds extends Fragment implements CustomRoundsInterface.Cust
     {
         this.customRoundsInterface.deleteRow();
     }
+
+    @OnClick(R.id.back_to_dashboard_from_custom_rounds) void backToDashboard()
+    {
+        this.customRoundsInterface.backToDashboard();
+    }
+
+    
 }

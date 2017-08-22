@@ -14,5 +14,7 @@
     <color name="dashboard_background">#efefef</color>
     <color name="work_color">#ff7043</color>
     <color name="rest_color">#26c6da</color>
+    <color name="finished_color">#AED581</color>
+    <color name="dashboard_color">#9FA8DA</color>
 
 </resources>

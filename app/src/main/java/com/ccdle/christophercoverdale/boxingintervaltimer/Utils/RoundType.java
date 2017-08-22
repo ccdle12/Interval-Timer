@@ -15,6 +15,8 @@ public class RoundType
         this.roundType = roundType;
     }
 
+    public RoundType() {}
+
     public String getRoundType()
     {
         return roundType;
@@ -23,5 +25,10 @@ public class RoundType
     public long getRoundTime()
     {
         return roundTime;
+    }
+
+    public void setRoundTime(long roundTime)
+    {
+        this.roundTime = roundTime;
     }
 }

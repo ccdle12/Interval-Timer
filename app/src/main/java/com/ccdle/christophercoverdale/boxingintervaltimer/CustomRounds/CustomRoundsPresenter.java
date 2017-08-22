@@ -1,17 +1,31 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.CustomRounds;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.CustomRoundsPresenterInterface;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.Dashboard;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.TimerDisplayPresenterInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.CustomRoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundType;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingDeque;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by christophercoverdale on 14/08/2017.
@@ -27,13 +41,20 @@ public class CustomRoundsPresenter implements CustomRoundsPresenterInterface, Cu
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
     private boolean parentFABClicked;
+    private Dashboard dashboard;
 
-    public CustomRoundsPresenter(CustomRounds customRounds)
+    private TimerDisplayPresenterInterface timerDisplayPresenterInterface;
+
+    private View customRoundsView;
+
+    public CustomRoundsPresenter(CustomRounds customRounds, Dashboard dashboard, TimerDisplayPresenter timerDisplayPresenter)
     {
         this.customRounds = customRounds;
         this.customRoundsCallback = this.customRounds;
-
         this.customRoundsCallback.setInterface(this);
+
+        this.dashboard = dashboard;
+        this.timerDisplayPresenterInterface = timerDisplayPresenter;
 
         this.parentFABClicked = false;
     }
@@ -50,6 +71,8 @@ public class CustomRoundsPresenter implements CustomRoundsPresenterInterface, Cu
         this.packageModel = packageModel;
     }
 
+
+
     private void replaceFragmentInActivityWithCustomRounds()
     {
         Activity activityRef = this.packageModel.getActivity();
@@ -64,7 +87,7 @@ public class CustomRoundsPresenter implements CustomRoundsPresenterInterface, Cu
     @Override
     public void initCustomRoundsAdapter()
     {
-        this.customRoundsAdapter = new CustomRoundsAdapter(this.packageModel.getActivity().getApplicationContext());
+        this.customRoundsAdapter = new CustomRoundsAdapter();
     }
 
     @Override
@@ -221,4 +244,74 @@ public class CustomRoundsPresenter implements CustomRoundsPresenterInterface, Cu
         this.customRoundsAdapter.delete();
     }
 
+    @Override
+    public void backToDashboard()
+    {
+        this.resetFlags();
+        this.goBackToDashboard();
+    }
+
+    private void resetFlags()
+    {
+        this.parentFABClicked = false;
+    }
+
+    private void goBackToDashboard()
+    {
+        this.hideSoftKeyboard();
+
+        Activity activityRef = this.packageModel.getActivity();
+
+        activityRef.getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, this.dashboard)
+                .commit();
+    }
+
+
+    @Override
+    public void launchTimer()
+    {
+        this.hideSoftKeyboard();
+        this.resetFlags();
+        this.customRoundsAdapter.notifyDataSetChanged();
+        this.initTimerDisplay();
+    }
+
+    @Override
+    public void getView(View customRoundsView)
+    {
+        this.customRoundsView = customRoundsView;
+    }
+
+
+    private void initTimerDisplay()
+    {
+        LinkedBlockingDeque queue = this.convertListToBlockingDeque(this.customRoundsAdapter.getCustomRoundsList());
+
+        this.timerDisplayPresenterInterface.sendPackageModel(this.packageModel);
+        this.timerDisplayPresenterInterface.sendQueue(queue);
+        this.timerDisplayPresenterInterface.launchTimerDisplay();
+    }
+
+    private LinkedBlockingDeque convertListToBlockingDeque(ArrayList arrayList)
+    {
+        LinkedBlockingDeque queue = new LinkedBlockingDeque();
+
+        for (int i = 0; i < arrayList.size(); i++)
+        {
+            CustomRoundType customRoundType = (CustomRoundType) arrayList.get(i);
+            customRoundType.setTime();
+
+            queue.add(customRoundType);
+        }
+
+        return queue;
+    }
+
+    private void hideSoftKeyboard()
+    {
+        InputMethodManager keyboard = (InputMethodManager) this.packageModel.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.hideSoftInputFromWindow(this.customRoundsView.getWindowToken(), 0);
+    }
 }

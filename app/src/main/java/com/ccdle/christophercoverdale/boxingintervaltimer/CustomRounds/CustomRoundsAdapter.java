@@ -1,7 +1,8 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.CustomRounds;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
-import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
-import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundType;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.CustomRoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.media.CamcorderProfile.get;
+
 
 /**
  * Created by christophercoverdale on 15/08/2017.
@@ -25,48 +27,56 @@ import butterknife.ButterKnife;
 
 public class CustomRoundsAdapter extends RecyclerView.Adapter<CustomRoundsAdapter.ViewHolder>
 {
+    private ArrayList<CustomRoundType> customRoundsList;
 
-    private Context context;
-    private List<RoundType> customRoundsList;
-    private int roundNumber;
-
-    public CustomRoundsAdapter(Context context)
+    public ArrayList<CustomRoundType> getCustomRoundsList()
     {
-        this.context = context;
-        this.customRoundsList = new LinkedList<RoundType>();
+        return this.customRoundsList;
+    }
 
-        this.initRoundNum();
+
+    public CustomRoundsAdapter()
+    {
+        this.customRoundsList = new ArrayList<>();
         this.initDefaultRounds();
     }
 
-    private void initRoundNum()
-    {
-        this.roundNumber = 1;
-    }
     private void initDefaultRounds()
     {
-        this.customRoundsList.add(new RoundType(90000, "work"));
-        this.customRoundsList.add(new RoundType(30000, "rest"));
+        this.customRoundsList.add(new CustomRoundType("01", "30", "work", (customRoundsList.size()/2) + 1));
+        this.customRoundsList.add(new CustomRoundType("00", "30", "rest", (customRoundsList.size()/2) + 1));
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_round_row, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, new CustomMinutesListener(), new CustomSecondsListener(), new CustomMinutesFocusChangedListener(), new CustomSecondsFocusChangedListener());
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        RoundType roundType = this.customRoundsList.get(position);
-        Long timeInMilliSecs = roundType.getRoundTime();
+        CustomRoundType roundType = this.customRoundsList.get(this.getItemViewType(position));
 
-        holder.customRoundsNum.setText(String.valueOf(customRoundsList.size()/2) + ".");
+        holder.customMinutesListener.updatePosition(this.getItemViewType(position));
+        holder.customSecondsListener.updatePosition(this.getItemViewType(position));
+
+        holder.customMinsFocusChanged.updatePosition(this.getItemViewType(position));
+        holder.customSecsFocusChanged.updatePosition(this.getItemViewType(position));
+
+        holder.customRoundsNum.setText(String.valueOf(roundType.getPosition()) + ".");
         holder.customRoundsType.setText(this.formatRoundType(roundType.getRoundType()));
-        holder.customMinutes.setText(this.convertToMinsDisplay(timeInMilliSecs));
-        holder.customSeconds.setText(this.convertToSecsDisplay(timeInMilliSecs));
+        holder.customMinutes.setText(roundType.getCustomMinutes());
+        holder.customSeconds.setText(roundType.getCustomSeconds());
 
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        return position;
     }
 
     private String formatRoundType(String roundType)
@@ -82,28 +92,12 @@ public class CustomRoundsAdapter extends RecyclerView.Adapter<CustomRoundsAdapte
         return roundTypeVal;
     }
 
-    private String convertToMinsDisplay(long timeInMilliSecs)
-    {
-        int minutes = TimeValuesHelper.formatRemainingMinutes(timeInMilliSecs);
-        String minutesDisplay = TimeValuesHelper.formatMinutesToString(minutes);
-
-        return minutesDisplay;
-    }
-
-    private String convertToSecsDisplay(long timeInMilliSecs)
-    {
-        int seconds = TimeValuesHelper.formatRemainingSeconds(timeInMilliSecs);
-        String secondsDisplay = TimeValuesHelper.formatSecondsToString(seconds);
-
-        return secondsDisplay;
-    }
-
-
     @Override
     public int getItemCount()
     {
         return this.customRoundsList.size();
     }
+
 
     public void add()
     {
@@ -128,11 +122,151 @@ public class CustomRoundsAdapter extends RecyclerView.Adapter<CustomRoundsAdapte
         @BindView(R.id.custom_colon) TextView customColon;
         @BindView(R.id.custom_seconds) EditText customSeconds;
 
-        public ViewHolder(View itemView)
+        private CustomMinutesListener customMinutesListener;
+        private CustomSecondsListener customSecondsListener;
+
+        private CustomMinutesFocusChangedListener customMinsFocusChanged;
+        private CustomSecondsFocusChangedListener customSecsFocusChanged;
+
+        public ViewHolder(View itemView, CustomMinutesListener customMinutesListener, CustomSecondsListener customSecondsListener, CustomMinutesFocusChangedListener customMinsFocusChanged, CustomSecondsFocusChangedListener customSecsFocusChanged)
         {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            this.customMinutesListener = customMinutesListener;
+            this.customSecondsListener = customSecondsListener;
+
+            this.customMinutes.addTextChangedListener(this.customMinutesListener);
+            this.customSeconds.addTextChangedListener(this.customSecondsListener);
+
+            this.customMinsFocusChanged = customMinsFocusChanged;
+            this.customSecsFocusChanged = customSecsFocusChanged;
+
+            this.customMinutes.setOnFocusChangeListener(this.customMinsFocusChanged);
+            this.customSeconds.setOnFocusChangeListener(this.customSecsFocusChanged);
+        }
+
+    }
+
+    private class CustomMinutesListener implements TextWatcher
+    {
+        private int position;
+
+        public void updatePosition(int position)
+        {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+            CustomRoundType roundType = customRoundsList.get(position);
+            roundType.setCustomMinutes(charSequence.toString());
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable)
+        {
+
+        }
+    }
+
+    private class CustomMinutesFocusChangedListener implements View.OnFocusChangeListener
+    {
+        private int position;
+
+        public void updatePosition(int position)
+        {
+            this.position = position;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus)
+        {
+            if (!hasFocus)
+            {
+                CustomRoundType roundType = customRoundsList.get(position);
+
+                if (!roundType.getCustomMinutes().equals(""))
+                {
+                    int minutes = TimeValuesHelper.convertStringToInt(roundType.getCustomMinutes());
+
+                    if (minutes > 60)
+                    {
+                        roundType.setCustomMinutes("60");
+                        roundType.setCustomSeconds("00");
+                        notifyItemChanged(position);
+                    }
+                }
+            }
+        }
+    }
+
+
+    private class CustomSecondsListener implements TextWatcher
+    {
+        private int position;
+
+        public void updatePosition(int position)
+        {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+        {
+            CustomRoundType roundType = customRoundsList.get(position);
+            roundType.setCustomSeconds(charSequence.toString());
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable)
+        {
+
+        }
+    }
+
+    private class CustomSecondsFocusChangedListener implements View.OnFocusChangeListener
+    {
+        private int position;
+
+        public void updatePosition(int position)
+        {
+            this.position = position;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus)
+        {
+            if (!hasFocus)
+            {
+                CustomRoundType roundType = customRoundsList.get(position);
+
+                if (!roundType.getCustomSeconds().equals(""))
+                {
+                    int seconds = TimeValuesHelper.convertStringToInt(roundType.getCustomSeconds());
+
+                    if (seconds > 60)
+                    {
+                        roundType.setCustomSeconds("59");
+                        notifyItemChanged(position);
+                    }
+                }
+            }
         }
     }
 }

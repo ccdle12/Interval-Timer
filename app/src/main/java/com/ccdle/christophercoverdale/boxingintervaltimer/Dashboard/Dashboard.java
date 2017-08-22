@@ -31,7 +31,6 @@ import butterknife.OnClick;
  */
 
 public class Dashboard extends android.app.Fragment implements DashboardInterface.DashboardCallback, InjectDaggerObjects {
-    private final String TAG = "Dashboard";
 
     private PackageModel packageModel;
     private RoundsModel roundsModel;
@@ -346,23 +345,4 @@ public class Dashboard extends android.app.Fragment implements DashboardInterfac
         this.restIntervalSeconds.post(() -> this.restIntervalSeconds.setText(formattedSeconds));
     }
 
-    //------------------------- Will move below to its own Presenter -----------------------------//
-    //@BindView(R.id.count_down_timer) TextView countDownTimerView;
-
-
-
-
-
-
-//    @OnClick(R.id.start_timer_button) void startTimer()
-//    {
-//        String workIntervalMins = this.workIntervalMinutes.getText().toString();
-//        String workIntervalSecs = this.workIntervalSeconds.getText().toString();
-//        String restIntervalMins = this.restIntervalMinutes.getText().toString();
-//        String restIntervalSecs = this.restIntervalSeconds.getText().toString();
-//
-//        this.dashBoardPresenterInterface.addToQueue(workIntervalMins, workIntervalSecs, restIntervalMins, restIntervalSecs, "2");
-//        this.dashBoardPresenterInterface.initializeTimer();
-//    }
-    //------------------------- Will move above to its own Presenter -----------------------------//
 }

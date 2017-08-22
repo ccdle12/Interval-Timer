@@ -6,7 +6,8 @@ import android.util.Log;
  * Created by USER on 5/23/2017.
  */
 
-public class CountDownTimer extends android.os.CountDownTimer implements CountDownTimerInterface {
+public class CountDownTimer extends android.os.CountDownTimer implements CountDownTimerInterface
+{
     private final String TAG = "CountDownTimer";
 
     Callback countDownTimerCallback;
@@ -15,9 +16,9 @@ public class CountDownTimer extends android.os.CountDownTimer implements CountDo
     private boolean hasPaused = false;
     private boolean isRunning = false;
 
-    public CountDownTimer(long time) {
+    public CountDownTimer(long time)
+    {
         super(time, 10);
-        Log.d(TAG, "Count Down Timer Constructed");
     }
 
     @Override
@@ -28,13 +29,11 @@ public class CountDownTimer extends android.os.CountDownTimer implements CountDo
                 this.terminateTimer();
             } else {
                 remainingTime = remainingTime - 10;
-                Log.d(TAG, "Remaining Time: " + remainingTime);
                 this.countDownTimerCallback.formatRemainingTime(remainingTime);
             }
 
         } else {
             remainingTime = millisUntilFinished;
-            Log.d(TAG, "Remaining Time: " + remainingTime);
 
             this.countDownTimerCallback.formatRemainingTime(millisUntilFinished);
 
@@ -49,7 +48,6 @@ public class CountDownTimer extends android.os.CountDownTimer implements CountDo
     @Override
     public void onFinish() {
         hasPaused = false;
-        Log.d(TAG, "Count Down Timer Finished");
         this.countDownTimerCallback.timerHasFinished();
     }
 

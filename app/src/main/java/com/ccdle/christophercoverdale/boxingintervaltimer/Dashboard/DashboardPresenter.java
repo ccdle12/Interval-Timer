@@ -227,8 +227,6 @@ public class DashboardPresenter implements DashboardInterface {
                 this.sendUpdateSecondsDisplay(0, editTextID);
             }
 
-
-
             this.sendUpdateMinutesToDisplay(minutesAsInt, editTextID);
 
         } else

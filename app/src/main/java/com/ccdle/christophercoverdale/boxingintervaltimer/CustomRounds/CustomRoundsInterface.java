@@ -3,6 +3,7 @@ package com.ccdle.christophercoverdale.boxingintervaltimer.CustomRounds;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 
 /**
@@ -34,10 +35,14 @@ public interface CustomRoundsInterface
     void hideRunTimer(FloatingActionButton fab);
 
     void deleteRow();
+    void backToDashboard();
+
+    void launchTimer();
+
+    void getView(View customRoundsView);
 
     interface CustomRoundsCallback
     {
         void setInterface(CustomRoundsInterface customRoundsInterface);
-
     }
 }

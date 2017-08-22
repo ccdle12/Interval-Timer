@@ -1,42 +1,37 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay;
 
 import android.app.Activity;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimer;
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimerInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.Dashboard;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.TimerDisplayPresenterInterface;
-import com.ccdle.christophercoverdale.boxingintervaltimer.FinishedScreen.FinishedScreen;
 import com.ccdle.christophercoverdale.boxingintervaltimer.FinishedScreen.FinishedScreenPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.CustomRoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.inject.Inject;
-
-import static android.content.ContentValues.TAG;
 
 
 /**
  * Created by christophercoverdale on 08/08/2017.
  */
 
-public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDisplayPresenterInterface, CountDownTimerInterface.Callback {
+public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDisplayPresenterInterface, CountDownTimerInterface.Callback  {
 
     private PackageModel packageModel;
     private RoundsModel roundsModel;
     private TimerDisplay timerDisplayForLaunchingFragment;
     private TimerDisplayCallback timerDisplayCallback;
 
-    private Queue timerQueue;
+    private LinkedBlockingDeque timerQueue;
     private SoundFX countDownBeep;
     private SoundFX roundEndBell;
 
@@ -47,10 +42,13 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
 
     private FinishedScreenPresenterInterface finishedScreen;
 
+    private boolean isCustomList;
+    private boolean isIntro;
+
 
     /* Dagger Injection */
     @Inject
-    public TimerDisplayPresenter(LinkedList<RoundType> queue, TimerDisplay timerDisplay, FinishedScreenPresenter finishedScreen)
+    public TimerDisplayPresenter(LinkedBlockingDeque<RoundType> queue, TimerDisplay timerDisplay, FinishedScreenPresenter finishedScreen)
     {
         this.timerQueue = queue;
         this.timerDisplayForLaunchingFragment = timerDisplay;
@@ -62,7 +60,6 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         this.finishedScreen = finishedScreen;
 
         this.timerDisplayCallback.setPresenterInterface(this);
-
     }
 
 
@@ -83,7 +80,15 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     @Override
     public void sendRoundsModel(RoundsModel roundsModel)
     {
+        this.isCustomList = false;
         this.roundsModel = roundsModel;
+    }
+
+    @Override
+    public void sendQueue(LinkedBlockingDeque queue)
+    {
+        this.isCustomList = true;
+        this.timerQueue = queue;
     }
 
     @Override
@@ -116,7 +121,11 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         this.addFiveSecondIntro();
         this.launchCountDownTimer();
 
-        this.updateTotalRoundsDisplay(this.roundsModel.getRounds());
+        if (!this.isCustomList)
+            this.updateTotalRoundsDisplay(this.roundsModel.getRounds());
+        else
+            this.updateTotalRoundsDisplay(String.valueOf(this.timerQueue.size()/2));
+
         this.timerDisplayCallback.updateRemainingRoundsDisplay(String.valueOf(this.currentRoundNumber));
 
         this.updateTimerDisplayBackground();
@@ -125,12 +134,15 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     public void addFiveSecondIntro()
     {
         RoundType fiveSecondIntro = new RoundType(5000, "intro");
-        this.timerQueue.add(fiveSecondIntro);
+        this.isIntro = true;
+        this.timerQueue.addFirst(fiveSecondIntro);
     }
 
     private void launchCountDownTimer()
     {
-        this.addToQueue(this.roundsModel);
+        if (!this.isCustomList)
+            this.addToQueue(this.roundsModel);
+
         this.initializeTimer();
     }
 
@@ -213,6 +225,8 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
 
         this.updateTimerDisplayBackground();
         this.setCountDownTimerCallback();
+
+
     }
 
 
@@ -221,11 +235,23 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         int totalWorkRound = 0;
         for (Object item : this.timerQueue)
         {
-            RoundType eachRound = (RoundType) item;
-
-            if (eachRound.getRoundType().equals("work"))
+            if (this.isCustomList)
             {
-                totalWorkRound++;
+                CustomRoundType eachRound = (CustomRoundType) item;
+
+                if (eachRound.getRoundType().equals("work"))
+                {
+                    totalWorkRound++;
+                }
+
+            } else {
+
+                RoundType eachRound = (RoundType) item;
+
+                if (eachRound.getRoundType().equals("work"))
+                {
+                    totalWorkRound++;
+                }
             }
         }
 
@@ -247,6 +273,8 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     public void formatRemainingTime(long remainingTime)
     {
         int remainingSeconds = TimeValuesHelper.formatRemainingSeconds(remainingTime);
+        int remainingMinutes = TimeValuesHelper.formatRemainingMinutes(remainingTime);
+
         remainingSeconds++;
 
         if (this.currentRoundType.equals("intro")) {
@@ -258,9 +286,6 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
 
         }
         else {
-
-            int remainingMinutes = TimeValuesHelper.formatRemainingMinutes(remainingTime);
-
             String minutesForDisplay = TimeValuesHelper.formatMinutesToString(remainingMinutes);
             String secondsForDisplay = TimeValuesHelper.formatSecondsToString(remainingSeconds);
 
@@ -270,7 +295,7 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
             this.timerDisplayCallback.updateTimerDisplay(formattedDisplay);
         }
 
-        if (remainingSeconds <= 5 && remainingSeconds != 1)
+        if (remainingSeconds <= 5 && remainingSeconds != 1 && remainingMinutes == 0)
             this.countDownBeep.startSoundFX();
     }
 
@@ -295,6 +320,8 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
             this.finishedScreen.sendPackageModel(this.packageModel);
             this.finishedScreen.launchFinishedScreen();
         }
+
+        this.isIntro = false;
     }
 
     private void updateRemainingRoundsDisplay()

@@ -14,6 +14,7 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 
 import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import javax.inject.Singleton;
 
@@ -41,19 +42,19 @@ public class MainModule {
     @Provides
     @Singleton
     public DashboardPresenter providesMainMenuPresenter() {
-        return new DashboardPresenter(new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard())), new CustomRoundsPresenter(new CustomRounds()));
+        return new DashboardPresenter(new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard())), new CustomRoundsPresenter(new CustomRounds(), new Dashboard(), new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()))));
     }
 
     @Provides
     @Singleton
     public TimerDisplayPresenter providesTimerDisplayPresenter() {
-        return new TimerDisplayPresenter(new LinkedList<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()));
+        return new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()));
     }
 
     @Provides
     @Singleton
-    public LinkedList<String> providesTimerQueue() {
-        return new LinkedList<>();
+    public LinkedBlockingDeque<String> providesTimerQueue() {
+        return new LinkedBlockingDeque<>();
     }
 
     @Provides
@@ -77,7 +78,7 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public CustomRoundsPresenter providesCustomRoundsPresenter() { return new CustomRoundsPresenter(new CustomRounds()); }
+    public CustomRoundsPresenter providesCustomRoundsPresenter() { return new CustomRoundsPresenter(new CustomRounds(), new Dashboard(), new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()))); }
 
     @Provides
     @Singleton
