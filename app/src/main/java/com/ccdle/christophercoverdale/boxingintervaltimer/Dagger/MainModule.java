@@ -8,6 +8,8 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.Dashboard;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.DashboardPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.FinishedScreen.FinishedScreen;
 import com.ccdle.christophercoverdale.boxingintervaltimer.FinishedScreen.FinishedScreenPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Settings.Settings;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Settings.SettingsPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplay;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
@@ -41,13 +43,17 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public DashboardPresenter providesMainMenuPresenter() {
-        return new DashboardPresenter(new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard())), new CustomRoundsPresenter(new CustomRounds(), new Dashboard(), new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()))));
+    public DashboardPresenter providesMainMenuPresenter()
+    {
+        return new DashboardPresenter(new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard())),
+                                      new CustomRoundsPresenter(new CustomRounds(), new Dashboard(), new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()))),
+                                      new SettingsPresenter(new Settings(), new Dashboard()));
     }
 
     @Provides
     @Singleton
-    public TimerDisplayPresenter providesTimerDisplayPresenter() {
+    public TimerDisplayPresenter providesTimerDisplayPresenter()
+    {
         return new TimerDisplayPresenter(new LinkedBlockingDeque<>(), new TimerDisplay(), new FinishedScreenPresenter(new FinishedScreen(), new Dashboard()));
     }
 
@@ -83,4 +89,18 @@ public class MainModule {
     @Provides
     @Singleton
     public CustomRounds providesCustomRounds() { return new CustomRounds(); }
+
+    @Provides
+    @Singleton
+    public SettingsPresenter providesSettingsPresenter()
+    {
+        return new SettingsPresenter(new Settings(), new Dashboard());
+    }
+
+    @Provides
+    @Singleton
+    public Settings providesSettings()
+    {
+        return new Settings();
+    }
 }

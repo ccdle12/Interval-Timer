@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -45,6 +46,8 @@ public class Dashboard extends android.app.Fragment implements DashboardInterfac
 
     @BindView(R.id.rest_round_minutes) EditText restIntervalMinutes;
     @BindView(R.id.rest_round_seconds) EditText restIntervalSeconds;
+
+    @BindView(R.id.settings_button) Button settingsButton;
 
 
     @Nullable
@@ -201,6 +204,11 @@ public class Dashboard extends android.app.Fragment implements DashboardInterfac
     @OnClick(R.id.custom_rounds) void launchCustomRounds()
     {
         this.dashBoardPresenterInterface.launchCustomRounds();
+    }
+
+    @OnClick(R.id.settings_button) void launchSettings()
+    {
+        this.dashBoardPresenterInterface.launchSettings();
     }
 
     private void initRoundsModel()

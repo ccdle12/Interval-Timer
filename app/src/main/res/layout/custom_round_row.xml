@@ -29,6 +29,7 @@
                 android:layout_alignBottom="@+id/custom_round_type"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:textSize="25dp"
                 android:paddingLeft="16dp"
                 android:text="1." />
 
@@ -42,6 +43,7 @@
                 android:paddingTop="10dp"
                 android:layout_toEndOf="@+id/custom_round_number"
                 android:layout_toRightOf="@+id/custom_round_number"
+                android:textSize="25dp"
                 android:text="Work" />
 
             <TextView
@@ -49,13 +51,11 @@
                 style="@style/Title20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="-"
                 android:layout_alignBaseline="@+id/custom_minutes"
                 android:layout_alignBottom="@+id/custom_minutes"
-                android:layout_marginLeft="19dp"
-                android:layout_marginStart="19dp"
-                android:layout_toEndOf="@+id/custom_round_type"
-                android:layout_toRightOf="@+id/custom_round_type"
-                android:text="-" />
+                android:layout_toLeftOf="@+id/custom_minutes"
+                android:layout_toStartOf="@+id/custom_minutes" />
 
             <EditText
                 android:id="@+id/custom_minutes"
@@ -64,9 +64,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
                 android:gravity="center"
                 android:digits="1234567890"
                 android:inputType="phone"
+                android:textSize="25dp"
                 android:text="00" />
 
             <TextView
@@ -78,6 +80,7 @@
                 android:layout_alignBottom="@+id/custom_minutes"
                 android:layout_toEndOf="@+id/custom_minutes"
                 android:layout_toRightOf="@+id/custom_minutes"
+                android:textSize="25dp"
                 android:text=":" />
 
             <EditText
@@ -91,6 +94,7 @@
                 android:gravity="center"
                 android:digits="1234567890"
                 android:inputType="phone"
+                android:textSize="25dp"
                 android:text="00" />
         </RelativeLayout>
 

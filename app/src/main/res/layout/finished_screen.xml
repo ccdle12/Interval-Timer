@@ -23,5 +23,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:elevation="24dp"
+        style="@style/textSize20"
         android:text="reset" />
 </RelativeLayout>

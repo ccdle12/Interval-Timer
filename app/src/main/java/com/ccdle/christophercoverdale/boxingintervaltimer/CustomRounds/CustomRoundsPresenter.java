@@ -16,6 +16,7 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.CustomRounds
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.Dashboard;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.TimerDisplayPresenterInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Settings.SettingsSingleton;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.CustomRoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;

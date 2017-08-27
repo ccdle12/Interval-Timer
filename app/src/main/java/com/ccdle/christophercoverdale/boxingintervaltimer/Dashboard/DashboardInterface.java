@@ -28,6 +28,7 @@ public interface DashboardInterface
 
     void startTheTimer(RoundsModel roundsModel);
     void launchCustomRounds();
+    void launchSettings();
 
     interface DashboardCallback
     {

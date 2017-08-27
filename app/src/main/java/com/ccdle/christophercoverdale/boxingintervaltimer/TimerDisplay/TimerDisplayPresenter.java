@@ -1,6 +1,10 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.AudioManager;
+import android.provider.MediaStore;
+import android.util.Log;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimer;
 import com.ccdle.christophercoverdale.boxingintervaltimer.CountDownTimer.CountDownTimerInterface;
@@ -8,12 +12,15 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.Dashboard;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.TimerDisplayPresenterInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.FinishedScreen.FinishedScreenPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Settings.SettingsSingleton;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.AudioManagerHelper;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.CustomRoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundType;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.VibrationHelper;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -45,6 +52,9 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     private boolean isCustomList;
     private boolean isIntro;
 
+    private AudioManagerHelper audioManagerHelper;
+    private VibrationHelper vibrationHelper;
+
 
     /* Dagger Injection */
     @Inject
@@ -61,6 +71,10 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
 
         this.timerDisplayCallback.setPresenterInterface(this);
     }
+
+
+
+
 
 
     /* Callbacks from Dashboard Presenter */
@@ -108,6 +122,10 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     }
 
 
+
+
+
+
     /* Interface to Timer Display */
     @Override
     public void setTimerDisplayCallback(TimerDisplayCallback timerDisplayCallback)
@@ -118,17 +136,28 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     @Override
     public void viewCreated()
     {
-        this.addFiveSecondIntro();
+        this.addIntroIfChecked();
         this.launchCountDownTimer();
 
         if (!this.isCustomList)
             this.updateTotalRoundsDisplay(this.roundsModel.getRounds());
         else
-            this.updateTotalRoundsDisplay(String.valueOf(this.timerQueue.size()/2));
+        {
+            int totalRounds = (this.timerQueue.size()/2) + 1;
+            this.updateTotalRoundsDisplay(String.valueOf(totalRounds));
+        }
 
         this.timerDisplayCallback.updateRemainingRoundsDisplay(String.valueOf(this.currentRoundNumber));
 
         this.updateTimerDisplayBackground();
+
+        this.initHelperVariables();
+    }
+
+    private void addIntroIfChecked()
+    {
+        if (SettingsSingleton.getInstance().isIntroRound())
+            this.addFiveSecondIntro();
     }
 
     public void addFiveSecondIntro()
@@ -144,6 +173,22 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
             this.addToQueue(this.roundsModel);
 
         this.initializeTimer();
+    }
+
+    private void initHelperVariables()
+    {
+        this.initAudioManagerHelper();
+        this.initVibrationHelper();
+    }
+
+    private void initAudioManagerHelper()
+    {
+        this.audioManagerHelper = new AudioManagerHelper(this.packageModel.getActivity());
+    }
+
+    private void initVibrationHelper()
+    {
+        this.vibrationHelper = new VibrationHelper(this.packageModel.getActivity());
     }
 
     private void updateTotalRoundsDisplay(String totalRounds)
@@ -165,6 +210,12 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
             this.timerDisplayCallback.updateBackgroundColor(activity.getResources().getColor(R.color.rest_color));
 
     }
+
+
+
+
+
+
 
     /* Queue methods for Count Down Timer */
     public void addToQueue(RoundsModel roundsModel)
@@ -229,7 +280,6 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
 
     }
 
-
     private int getCurrentRoundNumber()
     {
         int totalWorkRound = 0;
@@ -268,6 +318,12 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     }
 
 
+
+
+
+
+
+
     /* Count Down Timer Callback */
     @Override
     public void formatRemainingTime(long remainingTime)
@@ -295,8 +351,10 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
             this.timerDisplayCallback.updateTimerDisplay(formattedDisplay);
         }
 
-        if (remainingSeconds <= 5 && remainingSeconds != 1 && remainingMinutes == 0)
+        if (SettingsSingleton.getInstance().isCountDownSound() && remainingSeconds <= 5 && remainingSeconds != 1 && remainingMinutes == 0 && this.audioManagerHelper.requesetAudioFoucs())
+        {
             this.countDownBeep.startSoundFX();
+        }
     }
 
     @Override
@@ -304,7 +362,10 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     {
 
         if (this.queueHasNext()) {
-            this.roundEndBell.startSoundFX();
+
+            this.launchRoundEndSound();
+            this.launchVibration();
+
             this.initializeNextRound();
 
             this.updateRemainingRoundsDisplay();
@@ -322,6 +383,23 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         }
 
         this.isIntro = false;
+    }
+
+    private void launchRoundEndSound()
+    {
+        if (this.audioManagerHelper.requesetAudioFoucs())
+        {
+            if (SettingsSingleton.getInstance().isEndOfRoundSound())
+                this.roundEndBell.startSoundFX();
+
+            this.audioManagerHelper.releaseAudioFocus();
+        }
+    }
+
+    private void launchVibration()
+    {
+        if (SettingsSingleton.getInstance().isVibrate())
+            this.vibrationHelper.initShortVibrate();
     }
 
     private void updateRemainingRoundsDisplay()
@@ -393,4 +471,5 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
                 .replace(R.id.fragment_holder, new Dashboard())
                 .commit();
     }
+
 }

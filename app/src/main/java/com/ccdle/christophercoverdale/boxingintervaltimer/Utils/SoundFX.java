@@ -40,6 +40,4 @@ public class SoundFX
         this.mediaPlayer.release();
     }
 
-
-
 }

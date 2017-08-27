@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/count_down_sound"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/settings_count_down_sound"
+                    style="@style/Headline24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Count Down Audio" />
+
+                <TextView
+                    android:id="@+id/settings_count_down_sound_expl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+                    android:text="Turn off the 5 second count down warning"
+                    android:textSize="12dp"
+                    android:layout_below="@+id/settings_count_down_sound"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <CheckBox
+                    android:id="@+id/settings_count_down_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:checked="true"/>
+            </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/end_of_round"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder"
+        android:layout_below="@+id/count_down_sound"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/settings_end_of_round_sound"
+                style="@style/Headline24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End of Round Audio" />
+
+            <TextView
+                android:id="@+id/settings_end_of_round_expl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:text="Turn off the end of round alarm"
+                android:textSize="12dp"
+                android:layout_below="@+id/settings_end_of_round_sound"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <CheckBox
+                android:id="@+id/settings_end_of_round_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="14dp"
+                android:layout_marginEnd="14dp"
+                android:checked="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/vibration"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder"
+        android:layout_below="@+id/end_of_round"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/settings_vibration"
+                style="@style/Headline24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vibration Alert" />
+
+            <TextView
+                android:id="@+id/settings_vibration_expl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:text="Turn off the end of round vibration"
+                android:textSize="12dp"
+                android:layout_below="@+id/settings_vibration"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <CheckBox
+                android:id="@+id/settings_vibration_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="14dp"
+                android:layout_marginEnd="14dp"
+                android:checked="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/intro_round"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder"
+        android:layout_below="@+id/vibration"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/settings_intro_round"
+                style="@style/Headline24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 Second Intro Round" />
+
+            <TextView
+                android:id="@+id/settings_intro_round_expl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:text="Turn off 5 second intro round"
+                android:textSize="12dp"
+                android:layout_below="@+id/settings_intro_round"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <CheckBox
+                android:id="@+id/settings_intro_round_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="14dp"
+                android:layout_marginEnd="14dp"
+                android:checked="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/back_to_dashboard_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@mipmap/back_arrow"
+        android:layout_marginBottom="53dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

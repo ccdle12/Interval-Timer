@@ -1,6 +1,7 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.CustomRounds.CustomRoundsPresenter;
+import com.ccdle.christophercoverdale.boxingintervaltimer.Settings.SettingsPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay.TimerDisplayPresenter;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.PackageModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
@@ -12,20 +13,23 @@ import javax.inject.Inject;
  * Created by USER on 5/14/2017.
  */
 
-public class DashboardPresenter implements DashboardInterface {
+public class DashboardPresenter implements DashboardInterface
+{
 
     private DashboardCallback dashboardCallback;
 
     private TimerDisplayPresenterInterface timerDisplayPresenterInterface;
     private CustomRoundsPresenterInterface customRoundsPresenterInterface;
+    private SettingsPresenterInterface settingsPresenterInterface;
 
     private PackageModel packageModel;
 
     @Inject
-    public DashboardPresenter(TimerDisplayPresenter timerDisplay, CustomRoundsPresenter customRoundsPresenter)
+    public DashboardPresenter(TimerDisplayPresenter timerDisplay, CustomRoundsPresenter customRoundsPresenter, SettingsPresenter settingsPresenter)
     {
         this.timerDisplayPresenterInterface = timerDisplay;
         this.customRoundsPresenterInterface = customRoundsPresenter;
+        this.settingsPresenterInterface = settingsPresenter;
     }
 
     /* Dashboard Interface */
@@ -308,6 +312,13 @@ public class DashboardPresenter implements DashboardInterface {
     {
         this.customRoundsPresenterInterface.sendPackageModel(this.packageModel);
         this.customRoundsPresenterInterface.launchCustomRounds();
+    }
+
+    @Override
+    public void launchSettings()
+    {
+        this.settingsPresenterInterface.sendPackageModel(this.packageModel);
+        this.settingsPresenterInterface.launchSettings();
     }
 
     private void launchTimerDisplay()

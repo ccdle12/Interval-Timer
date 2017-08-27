@@ -12,4 +12,6 @@
     <string name="round_time">Round Time</string>
     <string name="rest_time">Rest Time</string>
     <string name="round_string">Round</string>
+    <string name="ad_id_banner">ca-app-pub-4108128512113208~5392374558</string>
+    <string name="settings">Settings</string>
 </resources>

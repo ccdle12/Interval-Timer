@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dashboard_layout"
     android:background="@color/rest_color">
-
 
     <ImageView
         android:id="@+id/increment_number_of_rounds"
@@ -23,9 +22,9 @@
         android:id="@+id/header_number_of_rounds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="@string/round_string"
         android:textColor="@color/primary_text"
-        android:layout_marginTop="24dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -185,28 +184,41 @@
         android:layout_toLeftOf="@+id/header_work_interval_time"
         android:layout_toStartOf="@+id/header_work_interval_time" />
 
+    <Button
+        android:id="@+id/start_timer_button"
+        style="@style/textSize20"
+        android:layout_width="140dp"
+        android:layout_height="90dp"
+        android:layout_alignLeft="@+id/decrement_rest_time"
+        android:layout_alignStart="@+id/decrement_rest_time"
+        android:layout_below="@+id/decrement_rest_time"
+        android:layout_marginTop="22dp"
+        android:elevation="24dp"
+        android:text="@string/start_timer"></Button>
+
+    <Button
+        android:id="@+id/settings_button"
+        style="@style/textSize20"
+        android:layout_width="140dp"
+        android:layout_height="90dp"
+        android:layout_above="@+id/custom_rounds"
+        android:layout_alignEnd="@+id/custom_rounds"
+        android:layout_alignRight="@+id/custom_rounds"
+        android:elevation="24dp"
+        android:text="@string/settings"></Button>
 
     <Button
         android:id="@+id/custom_rounds"
-        android:layout_width="200dp"
+        style="@style/textSize20"
+        android:layout_width="100dp"
         android:layout_height="90dp"
+        android:elevation="24dp"
+        android:text="Custom Rounds"
+        android:layout_below="@+id/start_timer_button"
         android:layout_alignLeft="@+id/start_timer_button"
         android:layout_alignStart="@+id/start_timer_button"
-        android:layout_below="@+id/start_timer_button"
-        android:elevation="24dp"
-        android:text="Custom Rounds">
-
-    </Button>
-
-    <Button
-        android:id="@+id/start_timer_button"
-        android:layout_width="200dp"
-        android:layout_height="90dp"
-        android:layout_below="@+id/rest_round_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:elevation="24dp"
-        android:text="@string/start_timer">
+        android:layout_alignRight="@+id/increment_rest_time"
+        android:layout_alignEnd="@+id/increment_rest_time">
 
     </Button>
 
