@@ -21,6 +21,7 @@ import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.RoundsModel;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.SoundFX;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.TimeValuesHelper;
 import com.ccdle.christophercoverdale.boxingintervaltimer.Utils.VibrationHelper;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -138,12 +139,18 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
     {
         this.addIntroIfChecked();
         this.launchCountDownTimer();
+        this.loadAdToView();
+        this.initializeTimer();
 
         if (!this.isCustomList)
             this.updateTotalRoundsDisplay(this.roundsModel.getRounds());
         else
         {
-            int totalRounds = (this.timerQueue.size()/2) + 1;
+            int totalRounds = (this.timerQueue.size()/2);
+
+            if (!this.isIntro)
+                totalRounds += 1;
+
             this.updateTotalRoundsDisplay(String.valueOf(totalRounds));
         }
 
@@ -154,10 +161,23 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         this.initHelperVariables();
     }
 
+    @Override
+    public void loadAdToView()
+    {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        this.timerDisplayCallback.updateAdView(adRequest);
+    }
+
     private void addIntroIfChecked()
     {
         if (SettingsSingleton.getInstance().isIntroRound())
             this.addFiveSecondIntro();
+    }
+
+    private void launchCountDownTimer()
+    {
+        if (!this.isCustomList)
+            this.addToQueue(this.roundsModel);
     }
 
     public void addFiveSecondIntro()
@@ -165,14 +185,6 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         RoundType fiveSecondIntro = new RoundType(5000, "intro");
         this.isIntro = true;
         this.timerQueue.addFirst(fiveSecondIntro);
-    }
-
-    private void launchCountDownTimer()
-    {
-        if (!this.isCustomList)
-            this.addToQueue(this.roundsModel);
-
-        this.initializeTimer();
     }
 
     private void initHelperVariables()
@@ -277,7 +289,6 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         this.updateTimerDisplayBackground();
         this.setCountDownTimerCallback();
 
-
     }
 
     private int getCurrentRoundNumber()
@@ -313,7 +324,8 @@ public class TimerDisplayPresenter implements TimerDisplayInterface, TimerDispla
         this.countDownTimer = new CountDownTimer(nextRound);
     }
 
-    private void setCountDownTimerCallback() {
+    private void setCountDownTimerCallback()
+    {
         this.countDownTimer.setCallback(this);
     }
 

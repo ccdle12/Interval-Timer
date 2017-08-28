@@ -1,5 +1,7 @@
 package com.ccdle.christophercoverdale.boxingintervaltimer.TimerDisplay;
 
+import com.google.android.gms.ads.AdRequest;
+
 /**
  * Created by christophercoverdale on 08/08/2017.
  */
@@ -8,6 +10,7 @@ public interface TimerDisplayInterface
 {
     void setTimerDisplayCallback(TimerDisplayCallback timerDisplayCallback);
     void viewCreated();
+    void loadAdToView();
 
     void initializeTimer();
     void pauseAndResumeTimer();
@@ -33,5 +36,7 @@ public interface TimerDisplayInterface
 
         void updatePauseButtonStop();
         void updatePauseButtonGo();
+
+        void updateAdView(AdRequest adRequest);
     }
 }

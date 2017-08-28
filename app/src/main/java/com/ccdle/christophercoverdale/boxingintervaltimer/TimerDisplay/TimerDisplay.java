@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.Dashboard.TimerDisplayPresenterInterface;
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.w3c.dom.Text;
 
@@ -41,6 +43,8 @@ public class TimerDisplay extends Fragment implements TimerDisplayInterface.Time
     @BindView(R.id.Reset) Button resetBtn;
 
     @BindView(R.id.timer_display) RelativeLayout timerDisplay;
+
+    @BindView(R.id.adView)AdView adView;
 
     @Nullable
     @Override
@@ -125,6 +129,12 @@ public class TimerDisplay extends Fragment implements TimerDisplayInterface.Time
     public void updatePauseButtonGo()
     {
         this.pauseAndGoBtn.post(() -> this.pauseAndGoBtn.setText("Go"));
+    }
+
+    @Override
+    public void updateAdView(AdRequest adRequest)
+    {
+        this.adView.loadAd(adRequest);
     }
 
     @Override

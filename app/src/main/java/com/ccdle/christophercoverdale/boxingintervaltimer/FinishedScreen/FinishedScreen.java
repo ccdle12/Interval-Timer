@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ccdle.christophercoverdale.boxingintervaltimer.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,7 @@ public class FinishedScreen extends android.app.Fragment implements FinishedScre
         ButterKnife.bind(this, rootView);
 
         this.finishedScreenInterface.viewCreated();
+
 
         return rootView;
     }
